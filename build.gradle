@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+// for compliance with higher Java versions
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name "jitpack"
+        url 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    // SLF4J and Logback for logging
+    implementation group: "ch.qos.logback", name: "logback-classic", version: "1.2.3"
+
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.4.4'
+
+    // this is for mysql java connector
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
+    runtime "mysql:mysql-connector-java:8.0.23"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
