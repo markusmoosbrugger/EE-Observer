@@ -2,4 +2,5 @@
 
 # EE-DB-Writer
 
-Repository which writes simple log entries to a database using the logback DB appender. 
+Project implementing a naive logger which stores log entries in a database using the logback DB 
+appender. 
