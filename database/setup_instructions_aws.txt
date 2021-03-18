@@ -1,0 +1,46 @@
+1. Select your region in AWS developer console and search Amazon RDS page
+
+2. Create database
+    - Engine options: MySQL (also other DB engines supported by logback)
+    - Edition: MySQL Community
+    - Version: MySQL 8.0.21
+    - Templates: Free Tier
+    - Settings:
+        - DB instance identifier: ee-logging
+        - Master username (--> store in credentials.env)
+        - Master password (--> store in credentials.env)
+    - DB instance class: db.t2.micro (included in AWS free tier)
+    - Storage:
+        - Storage type: General Purpose (SSD)
+        - Allocated storage: 20 GB
+        - Enable storage autoscaling: not enabled
+    - Connectivity:
+        - Virtual private cloud and subnet group: default
+        - Public access: Yes
+        - VPC security group: default
+        - Database port: 3306
+    - Additional configuration:
+        - Initial database name: ee_logging
+        - Backup: default settings
+        - Monitoring: enable logs
+
+3. Connect to the database using the command line or any other tool capable of connecting to mysql
+databases
+    - I had the issue that connections outside the VPC were still not allowed even if I had set
+    public access to Yes in the setup. I added another inbound rule for the selected security
+    group in the AWS developer console which resolved the issue.
+    - Endpoint (shown in AWS developer console): ee-logging.XXXXXXXXXXXX.eu-central-1.rds.amazonaws
+    .com
+    - Port: 3306
+
+4. Create the three empty tables needed by logback (logging_event, logging_event_exception,
+logging_event_property). This may be done with the ddl script provided in this folder
+(logback_db_definition.ddl).
+
+5. Configure database url, user and password in the `logback.xml` config file. For the username and
+password I used the `credentials.env` file located in this folder to avoid uploading credentials to
+git repositories.
+
+
+
+

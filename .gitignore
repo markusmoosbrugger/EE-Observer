@@ -1,5 +1,5 @@
 /build/
 /.gradle/
-/database/credentials.env
+/database/*.env
 .classpath
 
