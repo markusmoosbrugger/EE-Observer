@@ -1,0 +1,49 @@
+1. Select or create a google cloud project
+
+2. Go to the cloud SQL instances page in the google cloud console
+
+3. Create database instance
+    - Database engine: MySQL (also other DB engines supported by logback)
+    - Enable Compute Engine API
+    - Instance info:
+        - Instance id: ee-logging
+        - Password (--> store in credentials.env)
+        - Database version: MySQL 8.0
+    - Region and zonal availability
+        - Region: europe-west3 (Frankfurt)
+        - Single zone
+    - Machine type
+        - Shared core 1 vCPU
+        - Storage: SSD
+        - Storage capacity: 10 GB
+        - Enable automatic storage increases: not enabled
+    - Connections
+        - Public IP
+        - Add Network
+            - name: any
+            - network: 0.0.0.0/0    --> this allows to access the database from any client
+    - Backups
+        - default settings
+    - Maintenance
+        - default settings
+
+
+3. Connect to the database using the command line or any other tool capable of connecting to mysql
+databases
+    - Endpoint: [IP Address] (can be seen in the google cloud console --> Public IP address)
+    - Port: 3306
+
+4. Create database ee_logging. This can be done either via the google cloud console (Databases -->
+Create database) or by connecting to the database instance by using any MySQL client.
+
+5. Create the three empty tables needed by logback (logging_event, logging_event_exception,
+logging_event_property). This may be done with the ddl script provided in this folder
+(logback_db_definition.ddl).
+
+6. Configure database url, user and password in the `logback.xml` config file. I wrote these values
+into the `credentials.env` file located in this folder to avoid uploading credentials to
+git repositories.
+
+
+
+

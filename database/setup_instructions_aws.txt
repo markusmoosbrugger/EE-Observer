@@ -37,8 +37,8 @@ databases
 logging_event_property). This may be done with the ddl script provided in this folder
 (logback_db_definition.ddl).
 
-5. Configure database url, user and password in the `logback.xml` config file. For the username and
-password I used the `credentials.env` file located in this folder to avoid uploading credentials to
+5. Configure database url, user and password in the `logback.xml` config file. I wrote these values
+into the `credentials.env` file located in this folder to avoid uploading credentials to
 git repositories.
 
 

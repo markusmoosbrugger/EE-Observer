@@ -1,5 +1,5 @@
 <configuration>
-    <property file="database/credentials.env"/>
+    <property file="database/credentials_google.env"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
@@ -12,7 +12,7 @@
     <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
         <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
             <driverClass>com.mysql.cj.jdbc.Driver</driverClass>
-            <url>jdbc:mysql://ee-logging.ccrgr7gwtuhi.eu-central-1.rds.amazonaws.com:3306/ee_logging?useSSL=false</url>
+            <url>jdbc:mysql://${DB_INSTANCE}:3306/ee_logging?useSSL=false</url>
             <user>${USER}</user>
             <password>${PASSWORD}</password>
         </connectionSource>
