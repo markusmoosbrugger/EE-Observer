@@ -1,0 +1,16 @@
+1. Go to https://www.influxdata.com/products/influxdb-cloud/ and click on "Get Started Now"
+
+2. Select/create account and start the free trial
+
+3. In the menu on the left side select `Data`, click on `Java` and there you find setup instructions
+ and getting started code templates
+
+4. Create a new bucket or use the existing one already created for you
+
+5. Generate an access token
+
+6. Create the file `influxdb.properties` in the folder `src/main/java/resources/` containing the
+properties `token`, `bucket`, `org`, `url`
+
+7. Now you should be able to execute `InfluxRunner` and then you can have a look at the
+visualizations in the data explorer of influxdb cloud
