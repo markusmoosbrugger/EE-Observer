@@ -3,6 +3,8 @@ package at.markusmoosbrugger.logback;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.util.ContextInitializer;
 import ch.qos.logback.core.util.StatusPrinter;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,11 @@ public class Runner {
     DBLogger dbLogger = new DBLogger();
 
     Logger logger = LoggerFactory.getLogger(Runner.class);
+    JsonObject input = new JsonObject();
+    input.add("inputValue", new JsonPrimitive(5));
+
+    JsonObject output = new JsonObject();
+    output.add("result", new JsonPrimitive(10));
 
     logger.debug("Starting function execution...");
     String type = "Test type";
@@ -37,7 +44,7 @@ public class Runner {
         logger.error("Error while executing random wait function. ");
       }
       dbLogger.logFunctionInvocation(UUID.randomUUID().toString(), type, Duration.between(start,
-          Instant.now()).toMillis(), success);
+          Instant.now()).toMillis(), success, input, output);
     }
     logger.debug("Function execution finished.");
   }
@@ -45,6 +52,11 @@ public class Runner {
   public static long randomWaitFunction() throws InterruptedException {
     long randomValue = (long)(Math.random() * 1000);
     Thread.sleep(randomValue);
+
+    // throw fake exception in 10% of the cases to test logging
+    if (randomValue <100) {
+      throw new InterruptedException();
+    }
 
     return randomValue;
   }
