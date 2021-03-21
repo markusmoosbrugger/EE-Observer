@@ -2,8 +2,9 @@
 
 # EE-DB-Writer
 
-Project containing a few experiments to log function properties to various databases. The
-package `logback` contains a simple logger which uses a logback DB appender to store function
+Project containing a few experiments to log function properties to various databases. 
+
+The package `logback` contains a simple logger which uses a logback DB appender to store function
 parameters such as function id, function type and execution time to a relational MySQL database.
 Here I tested the logging functionality with a local MySQL database, as well as a database hosted in
 AWS and Google.
