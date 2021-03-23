@@ -4,6 +4,10 @@ buildscript {
     }
 }
 
+plugins {
+	id "org.sonarqube" version "2.7"
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
@@ -24,6 +28,8 @@ repositories {
         url 'https://jitpack.io'
     }
 }
+
+sourceCompatibility = 11
 
 dependencies {
     // gson to define the format of the exchanged messages
@@ -47,5 +53,12 @@ jacocoTestReport {
     reports {
         xml.enabled true
     }
+}
+
+sonarqube {
+	properties {
+		property "sonar.login", "admin"
+		property "sonar.password", "admin" // or whatever you change you pw to
+	}
 }
 
