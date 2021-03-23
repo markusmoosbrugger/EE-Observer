@@ -1,0 +1,13 @@
+
+
+To use SonarQube:
+
+(Assuming your are on Linux)
+
+1) Install Sonarqube 7.7 (Just download the .zip from "https://www.sonarqube.org/downloads/" under historical downloads -- you could also try a current version, but I am not sure whether it will work).
+
+2) Unzip the folder to some dir, go there -> bin -> linux-x86-64 -> from that dir, execute the "./sonar.sh console" command from the command line (this may take a while), wait until it says "SonarQube is up" and look for the local host link in the console output
+
+3) Paste link in browser -> login is user: admin; pw: admin.
+
+4) with the running sonarqube server, running gradle sonarqube (with the build adjustments from this branch) should get you an analysis which you can look at in the browser.

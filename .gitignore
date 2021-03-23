@@ -3,3 +3,8 @@
 /database/*.env
 .classpath
 
+bin/
+.settings/
+.project
+
+
