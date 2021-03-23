@@ -59,7 +59,7 @@ jacocoTestReport {
 sonarqube {
 	properties {
 		property "sonar.login", "admin"
-		property "sonar.password", "admin2" // or whatever you change you pw to
+		property "sonar.password", "admin" // or whatever you change you pw to
 	}
 }
 
