@@ -22,12 +22,12 @@ public class FunctionSimulator {
     for (int i = 0; i<numberOfFunctions; i++) {
       randomWait(1000);
       InfluxFunction function = new InfluxFunction();
-      function.functionId = "function_" + String.valueOf(i);
-      function.functionType = "functionType_" + String.valueOf(i);
+      function.functionId = "dummy_function_" + String.valueOf(i);
+      function.functionType = "functionType_" + String.valueOf(i%3);
       // success ratio depends on the function number
       function.setRandomSuccess((i+1) * 0.1);
       // execution time depends on the function number
-      function.setRandomExecutionTime(MAX_EXECUTION_TIME * (i+1));
+      function.setRandomExecutionTime(MAX_EXECUTION_TIME * (i+5), MAX_EXECUTION_TIME * i);
       function.time = Instant.now();
 
       writer.saveFunctionInvocation(function);

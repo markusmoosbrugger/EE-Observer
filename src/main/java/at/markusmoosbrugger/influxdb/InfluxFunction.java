@@ -17,8 +17,8 @@ import java.time.Instant;
 
   @Column(name = "time") protected Instant time;
 
-  public void setRandomExecutionTime(int maxExecutionTime) {
-    this.executionTime = Math.random() * maxExecutionTime;
+  public void setRandomExecutionTime(double maxExecutionTime, double minExecutionTime) {
+    this.executionTime = Math.random() * (maxExecutionTime-minExecutionTime) + minExecutionTime;
   }
 
   public void setRandomSuccess(double successPercentage) {
