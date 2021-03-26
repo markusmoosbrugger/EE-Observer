@@ -22,7 +22,7 @@
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="at.markusmoosbrugger.logback.DBLogger" level="INFO" additivity="true">
+    <logger name="at.markusmoosbrugger.logback.LogbackMySQLWriter" level="INFO" additivity="true">
         <appender-ref ref="DB" />
     </logger>
 

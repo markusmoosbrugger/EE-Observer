@@ -1,11 +1,12 @@
 package at.markusmoosbrugger.influxdb;
 
+import at.markusmoosbrugger.functioninvocation.FunctionInvocation;
 import com.influxdb.annotations.Column;
 import com.influxdb.annotations.Measurement;
 
 import java.time.Instant;
 
-@Measurement(name = "FunctionMeasurement") public class InfluxFunction {
+@Measurement(name = "FunctionMeasurement") public class InfluxFunctionInvocation {
 
   @Column(name = "functionId", tag = true) protected String functionId;
 
@@ -17,12 +18,16 @@ import java.time.Instant;
 
   @Column(name = "time") protected Instant time;
 
-  public void setRandomExecutionTime(double maxExecutionTime, double minExecutionTime) {
-    this.executionTime = Math.random() * (maxExecutionTime-minExecutionTime) + minExecutionTime;
+  public InfluxFunctionInvocation() {
+
   }
 
-  public void setRandomSuccess(double successPercentage) {
-    this.success = Math.random() < successPercentage ? true : false;
+  public InfluxFunctionInvocation(FunctionInvocation functionInvocation) {
+    this.functionId = functionInvocation.getFunctionId();
+    this.functionType = functionInvocation.getFunctionType();
+    this.success = functionInvocation.isSuccess();
+    this.executionTime = functionInvocation.getExecutionTime();
+    this.time = functionInvocation.getTime();
   }
 
   @Override public String toString() {

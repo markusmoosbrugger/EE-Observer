@@ -1,5 +1,7 @@
 package at.markusmoosbrugger.influxdb;
 
+import at.markusmoosbrugger.functioninvocation.FunctionInvocation;
+import at.markusmoosbrugger.functioninvocation.FunctionInvocationWriter;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
@@ -13,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class InfluxDBWriter {
+public class InfluxDBWriter implements FunctionInvocationWriter {
 
   protected Logger logger = LoggerFactory.getLogger(InfluxDBWriter.class);
   protected String pathToPropertiesFile = "./src/main/resources/influxdb.properties";
@@ -42,17 +44,18 @@ public class InfluxDBWriter {
 
   }
 
-  public void logFunctionInvocation(InfluxFunction function) {
+  public void logFunctionInvocation(InfluxFunctionInvocation function) {
 
     // this logger does only output to the console at the moment
     logger.info("TYPE {} ID {} EXEC TIME {} milliseconds SUCCESS {}.", function.functionId,
         function.functionType, function.executionTime, function.success);
   }
 
-  public void saveFunctionInvocation(InfluxFunction function) {
+  public void saveFunctionInvocation(FunctionInvocation invocation) {
+    InfluxFunctionInvocation function = new InfluxFunctionInvocation(invocation);
+
     WriteApi writeApi = client.getWriteApi();
     writeApi.writeMeasurement(bucket, org, WritePrecision.MS, function);
-
     logFunctionInvocation(function);
   }
 }

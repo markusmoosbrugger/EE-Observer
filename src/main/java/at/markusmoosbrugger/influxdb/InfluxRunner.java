@@ -1,5 +1,6 @@
 package at.markusmoosbrugger.influxdb;
 
+import at.markusmoosbrugger.functioninvocation.FunctionInvocationSimulator;
 import ch.qos.logback.classic.util.ContextInitializer;
 
 public class InfluxRunner {
@@ -10,7 +11,9 @@ public class InfluxRunner {
 
     System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, pathToInfluxDBConfiguration);
 
-    FunctionSimulator simulator = new FunctionSimulator();
+    InfluxDBWriter writer = new InfluxDBWriter();
+    FunctionInvocationSimulator simulator = new FunctionInvocationSimulator(writer);
+
     simulator.simulateMultipleFunctions(10, 10);
 
   }
