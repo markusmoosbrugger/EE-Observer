@@ -16,13 +16,13 @@ public class FunctionInvocationSimulator {
 
   public void simulateMultipleFunctions(int numberOfFunctions, int numberOfRuns) {
     for (int i = 0; i < numberOfRuns; i++) {
-      simulateFunction(numberOfFunctions);
+      simulateRun(numberOfFunctions);
     }
   }
 
   // functions are simulated in a way that functions with a slower function number tend to have a
   // lower execution time, however, also a smaller success ratio
-  public void simulateFunction(int numberOfFunctions) {
+  public void simulateRun(int numberOfFunctions) {
     for (int i = 0; i < numberOfFunctions; i++) {
       randomWait(1000);
       FunctionInvocation invocation = new FunctionInvocation();
