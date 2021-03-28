@@ -13,7 +13,7 @@ The package `influxdb` contains a database writer which stores similar function 
 time series database InfluxDB. Furthermore it contains an POJO `InfluxFunction` which defines the
 properties which are stored in the DB.
 
-The package `dynamodb` contains a database writer which stores the function invocations to an
+The package `dynamodb` contains a database writer which stores the function invocations to a
 DynamoDB table hosted on AWS.
 
 The package `functioninvocation` contains a simulator, which simulates multiple runs of multiple

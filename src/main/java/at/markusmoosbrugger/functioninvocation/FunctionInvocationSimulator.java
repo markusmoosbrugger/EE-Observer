@@ -2,12 +2,15 @@ package at.markusmoosbrugger.functioninvocation;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 
 public class FunctionInvocationSimulator {
 
-  static final int MAX_EXECUTION_TIME = 10;
+  static final double MAX_EXECUTION_TIME = 10;
+  protected Logger logger = LoggerFactory.getLogger(FunctionInvocationSimulator.class);
   protected FunctionInvocationWriter writer;
 
   public FunctionInvocationSimulator(FunctionInvocationWriter writer) {
@@ -26,8 +29,8 @@ public class FunctionInvocationSimulator {
     for (int i = 0; i < numberOfFunctions; i++) {
       randomWait(1000);
       FunctionInvocation invocation = new FunctionInvocation();
-      invocation.functionId = "dummy_function_" + String.valueOf(i);
-      invocation.functionType = "functionType_" + String.valueOf(i % 3);
+      invocation.functionId = "dummy_function_" + i;
+      invocation.functionType = "functionType_" + i % 3;
       // success ratio depends on the function number
       invocation.setRandomSuccess((i + 1) * 0.1);
       // execution time depends on the function number
@@ -53,7 +56,8 @@ public class FunctionInvocationSimulator {
     try {
       Thread.sleep((long) (Math.random() * maxMillis));
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      Thread.currentThread().interrupt();
+      throw new RuntimeException();
     }
   }
 

@@ -89,6 +89,6 @@ public class FunctionInvocation {
   }
 
   public void setRandomSuccess(double successPercentage) {
-    this.success = Math.random() < successPercentage ? true : false;
+    this.success = Math.random() < successPercentage;
   }
 }

@@ -29,9 +29,5 @@ public class LogbackMySQLWriter implements FunctionInvocationWriter {
     logger.info("ID {} TYPE {} EXEC TIME {} milliseconds SUCCESS {} INPUT {} OUTPUT {}.",
         invocation.getFunctionId(), invocation.getFunctionType(), invocation.getExecutionTime(),
         invocation.isSuccess(), invocation.getInput(), invocation.getOutput());
-
-
-    // Example to log something into table logging_event_exception
-    //logger.error("Exception", new RuntimeException("Testing Exception"));
   }
 }
