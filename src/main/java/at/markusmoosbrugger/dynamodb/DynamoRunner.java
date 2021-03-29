@@ -8,7 +8,8 @@ public class DynamoRunner {
   public static void main(String[] args) {
     DynamoDBWriter writer = new DynamoDBWriter();
 
-    FunctionInvocationSimulator simulator = new FunctionInvocationSimulator(writer);
+    FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
+    simulator.addWriter(writer);
 
     simulator.simulateMultipleFunctions(5, 5);
   }

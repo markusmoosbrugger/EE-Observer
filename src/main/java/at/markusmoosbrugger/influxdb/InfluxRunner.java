@@ -12,7 +12,9 @@ public class InfluxRunner {
     System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, pathToInfluxDBConfiguration);
 
     InfluxDBWriter writer = new InfluxDBWriter();
-    FunctionInvocationSimulator simulator = new FunctionInvocationSimulator(writer);
+    FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
+    // TODO: check if we should only flush in the end
+    simulator.addWriter(writer);
 
     simulator.simulateMultipleFunctions(10, 10);
 

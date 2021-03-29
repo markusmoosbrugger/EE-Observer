@@ -22,11 +22,13 @@ import java.util.Properties;
 public class DynamoDBWriter implements FunctionInvocationWriter {
 
   protected static String pathToPropertiesFile = "./src/main/resources/dynamodb.credentials";
-  protected Logger logger = LoggerFactory.getLogger(DynamoDBWriter.class);
+  protected Logger logger;
   protected Table invocationsTable;
+  protected String tableName;
 
 
   public DynamoDBWriter() {
+    logger = LoggerFactory.getLogger(DynamoDBWriter.class);
     BasicAWSCredentials awsCreds = null;
     try (InputStream input = new FileInputStream(pathToPropertiesFile)) {
       Properties properties = new Properties();
@@ -35,6 +37,8 @@ public class DynamoDBWriter implements FunctionInvocationWriter {
       String accessKeyId = (String) properties.get("aws_access_key_id");
       String secretAccessKey = (String) properties.get("aws_secret_access_key");
       awsCreds = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+
+      this.tableName = (String) properties.get("table");
 
     } catch (FileNotFoundException e) {
       logger.error("Credentials file not found. ", e);
@@ -47,8 +51,7 @@ public class DynamoDBWriter implements FunctionInvocationWriter {
 
 
     DynamoDB dynamoDB = new DynamoDB(client);
-    String tableName = "Invocations";
-    this.invocationsTable = dynamoDB.getTable(tableName);
+    this.invocationsTable = dynamoDB.getTable(this.tableName);
   }
 
 

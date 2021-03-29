@@ -6,19 +6,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FunctionInvocationSimulator {
 
   static final double MAX_EXECUTION_TIME = 10;
   protected Logger logger = LoggerFactory.getLogger(FunctionInvocationSimulator.class);
-  protected FunctionInvocationWriter writer;
+  protected List<FunctionInvocationWriter> writers;
 
-  public FunctionInvocationSimulator(FunctionInvocationWriter writer) {
-    this.writer = writer;
+  public FunctionInvocationSimulator() {
+    this.writers = new ArrayList<>();
+  }
+
+  public void addWriter(FunctionInvocationWriter writer) {
+    this.writers.add(writer);
+  }
+
+  public void removeWriter(FunctionInvocationWriter writer) {
+    this.writers.remove(writer);
   }
 
   public void simulateMultipleFunctions(int numberOfFunctions, int numberOfRuns) {
     for (int i = 0; i < numberOfRuns; i++) {
+      System.out.println("\n--------- Simulating run " + (i+1) + " ---------");
       simulateRun(numberOfFunctions);
     }
   }
@@ -46,8 +57,13 @@ public class FunctionInvocationSimulator {
       output.add("result", new JsonPrimitive(Math.random() * 10 + 10));
       invocation.output = output;
 
-      writer.saveFunctionInvocation(invocation);
+      saveFunctionInvocation(invocation);
     }
+  }
+
+  private void saveFunctionInvocation(FunctionInvocation invocation) {
+    writers.stream().forEach(
+        functionInvocationWriter -> functionInvocationWriter.saveFunctionInvocation(invocation));
   }
 
 

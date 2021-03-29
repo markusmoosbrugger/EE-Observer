@@ -2,6 +2,7 @@ package at.markusmoosbrugger.influxdb;
 
 import at.markusmoosbrugger.functioninvocation.FunctionInvocation;
 import at.markusmoosbrugger.functioninvocation.FunctionInvocationWriter;
+import at.markusmoosbrugger.logback.LogbackMySQLWriter;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
@@ -17,13 +18,14 @@ import java.util.Properties;
 
 public class InfluxDBWriter implements FunctionInvocationWriter {
 
-  protected Logger logger = LoggerFactory.getLogger(InfluxDBWriter.class);
+  protected Logger logger;
   protected String pathToPropertiesFile = "./src/main/resources/influxdb.properties";
   protected InfluxDBClient client;
   protected String bucket;
   protected String org;
 
   public InfluxDBWriter(){
+    logger = LoggerFactory.getLogger(InfluxDBWriter.class);
     try (InputStream input = new FileInputStream(pathToPropertiesFile)) {
       Properties properties = new Properties();
 
@@ -56,6 +58,7 @@ public class InfluxDBWriter implements FunctionInvocationWriter {
 
     WriteApi writeApi = client.getWriteApi();
     writeApi.writeMeasurement(bucket, org, WritePrecision.MS, function);
+    writeApi.flush();
     logFunctionInvocation(function);
   }
 }

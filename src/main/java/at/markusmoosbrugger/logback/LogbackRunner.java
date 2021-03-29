@@ -6,9 +6,9 @@ public class LogbackRunner {
   public static void main(String[] args) {
 
     LogbackMySQLWriter writer = new LogbackMySQLWriter();
+    FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
+    simulator.addWriter(writer);
 
-    FunctionInvocationSimulator simulator = new FunctionInvocationSimulator(writer);
-
-    simulator.simulateMultipleFunctions(5, 5);
+    simulator.simulateMultipleFunctions(10, 5);
   }
 }
