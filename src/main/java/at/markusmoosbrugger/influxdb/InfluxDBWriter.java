@@ -18,7 +18,7 @@ import java.util.Properties;
 public class InfluxDBWriter implements FunctionInvocationWriter {
 
   protected Logger logger;
-  protected String pathToPropertiesFile = "./src/main/resources/influxdb.properties";
+  protected static String pathToPropertiesFile = "./src/main/resources/influxdb.properties";
   protected InfluxDBClient client;
   protected String bucket;
   protected String org;

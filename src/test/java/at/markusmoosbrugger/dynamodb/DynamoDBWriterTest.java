@@ -19,9 +19,13 @@ import static org.mockito.Mockito.*;
 public class DynamoDBWriterTest {
 
   @Test public void testConstructor() {
+    String testPropertiesPath = "./src/test/resources/dynamodb.credentials";
+    DynamoDBWriter.pathToPropertiesFile = testPropertiesPath;
+
     DynamoDBWriter writer = new DynamoDBWriter();
+
     Properties properties = new Properties();
-    try (InputStream input = new FileInputStream("./src/main/resources/dynamodb.credentials")) {
+    try (InputStream input = new FileInputStream(testPropertiesPath)) {
       properties.load(input);
     } catch (FileNotFoundException e) {
       fail();
