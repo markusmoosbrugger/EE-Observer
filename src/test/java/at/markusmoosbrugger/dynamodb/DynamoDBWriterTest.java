@@ -3,6 +3,7 @@ package at.markusmoosbrugger.dynamodb;
 import at.markusmoosbrugger.functioninvocation.FunctionInvocation;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 
@@ -18,10 +19,14 @@ import static org.mockito.Mockito.*;
 
 public class DynamoDBWriterTest {
 
-  @Test public void testConstructor() {
-    String testPropertiesPath = "./src/test/resources/dynamodb.credentials";
-    DynamoDBWriter.pathToPropertiesFile = testPropertiesPath;
+  public static String testPropertiesPath = "./src/test/resources/dynamodb.credentials";
 
+  @BeforeClass
+  public static void setTestProperties() {
+    DynamoDBWriter.pathToPropertiesFile = testPropertiesPath;
+  }
+
+  @Test public void testConstructor() {
     DynamoDBWriter writer = new DynamoDBWriter();
 
     Properties properties = new Properties();

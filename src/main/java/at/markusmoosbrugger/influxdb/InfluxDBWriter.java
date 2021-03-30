@@ -22,25 +22,38 @@ public class InfluxDBWriter implements FunctionInvocationWriter {
   protected InfluxDBClient client;
   protected String bucket;
   protected String org;
+  protected String url;
+  private String token;
 
   public InfluxDBWriter() {
     logger = LoggerFactory.getLogger(InfluxDBWriter.class);
+    readProperties();
+    client = InfluxDBClientFactory.create(this.url, this.token.toCharArray());
+  }
+
+  // currently only used for unit test
+  public InfluxDBWriter(InfluxDBClient client) {
+    logger = LoggerFactory.getLogger(InfluxDBWriter.class);
+    readProperties();
+    this.client = client;
+  }
+
+  private void readProperties() {
     try (InputStream input = new FileInputStream(pathToPropertiesFile)) {
       Properties properties = new Properties();
       properties.load(input);
       bucket = (String) properties.get("bucket");
       org = (String) properties.get("org");
-      String url = (String) properties.get("url");
-      String token = (String) properties.get("token");
-      client = InfluxDBClientFactory.create(url, token.toCharArray());
+      url = (String) properties.get("url");
+      token = (String) properties.get("token");
 
     } catch (FileNotFoundException e) {
       logger.error("Properties file not found. ", e);
     } catch (IOException e) {
       logger.error("IO Exception while reading properties file. ", e);
     }
-
   }
+
 
   public void logFunctionInvocation(InfluxFunctionInvocation function) {
 

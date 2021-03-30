@@ -4,6 +4,7 @@ import at.markusmoosbrugger.functioninvocation.FunctionInvocation;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.domain.WritePrecision;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 
@@ -21,13 +22,15 @@ import static org.mockito.Mockito.*;
 
 public class InfluxDBWriterTest {
 
+  public static String testPropertiesPath = "./src/test/resources/influxdb.properties";
+
+  @BeforeClass public static void setTestProperties() {
+    InfluxDBWriter.pathToPropertiesFile = testPropertiesPath;
+  }
 
   // TODO check how to mock static InfluxDBClientFactory.create call
   //@Test
   public void testConstructor() {
-    String testPropertiesPath = "./src/test/resources/influxdb.properties";
-    InfluxDBWriter.pathToPropertiesFile = testPropertiesPath;
-
     InfluxDBWriter writer = new InfluxDBWriter();
 
     Properties properties = new Properties();
@@ -49,7 +52,7 @@ public class InfluxDBWriterTest {
     WriteApi writeApiMock = mock(WriteApi.class);
     Logger loggerMock = mock(Logger.class);
 
-    InfluxDBWriter writer = new InfluxDBWriter();
+    InfluxDBWriter writer = new InfluxDBWriter(clientMock);
     writer.client = clientMock;
     writer.logger = loggerMock;
 
