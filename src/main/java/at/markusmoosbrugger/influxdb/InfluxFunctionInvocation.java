@@ -5,6 +5,7 @@ import com.influxdb.annotations.Column;
 import com.influxdb.annotations.Measurement;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Measurement(name = "FunctionMeasurement") public class InfluxFunctionInvocation {
 
@@ -34,5 +35,18 @@ import java.time.Instant;
     return "InfluxFunction{" + "functionId='" + functionId + '\'' + ", functionType='"
         + functionType + '\'' + ", executionTime=" + executionTime + ", success=" + success
         + ", time=" + time + '}';
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
+    InfluxFunctionInvocation that = (InfluxFunctionInvocation) o;
+    return functionId.equals(that.functionId) && Objects.equals(time, that.time);
+  }
+
+  @Override public int hashCode() {
+    return Objects.hash(functionId, time);
   }
 }

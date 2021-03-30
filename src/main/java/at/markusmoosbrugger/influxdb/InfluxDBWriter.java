@@ -2,7 +2,6 @@ package at.markusmoosbrugger.influxdb;
 
 import at.markusmoosbrugger.functioninvocation.FunctionInvocation;
 import at.markusmoosbrugger.functioninvocation.FunctionInvocationWriter;
-import at.markusmoosbrugger.logback.LogbackMySQLWriter;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApi;
@@ -24,16 +23,13 @@ public class InfluxDBWriter implements FunctionInvocationWriter {
   protected String bucket;
   protected String org;
 
-  public InfluxDBWriter(){
+  public InfluxDBWriter() {
     logger = LoggerFactory.getLogger(InfluxDBWriter.class);
     try (InputStream input = new FileInputStream(pathToPropertiesFile)) {
       Properties properties = new Properties();
-
       properties.load(input);
-
       bucket = (String) properties.get("bucket");
       org = (String) properties.get("org");
-
       String url = (String) properties.get("url");
       String token = (String) properties.get("token");
       client = InfluxDBClientFactory.create(url, token.toCharArray());

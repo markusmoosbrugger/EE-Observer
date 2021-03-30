@@ -29,7 +29,7 @@ public class FunctionInvocationSimulator {
 
   public void simulateMultipleFunctions(int numberOfFunctions, int numberOfRuns) {
     for (int i = 0; i < numberOfRuns; i++) {
-      System.out.println("\n--------- Simulating run " + (i+1) + " ---------");
+      logger.info("\n--------- Simulating run {} ---------", i + 1);
       simulateRun(numberOfFunctions);
     }
   }
@@ -73,7 +73,7 @@ public class FunctionInvocationSimulator {
       Thread.sleep((long) (Math.random() * maxMillis));
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
-      throw new RuntimeException();
+      throw new RuntimeException("Unexpected interrupt", e);
     }
   }
 
