@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 public class DynamoDBWriterTest {
 
-  public static String testPropertiesPath = "./src/test/resources/dynamodb.credentials";
+  public static String testPropertiesPath = "./src/test/resources/dynamodb.properties";
 
   @BeforeClass
   public static void setTestProperties() {

@@ -20,3 +20,39 @@ The package `functioninvocation` contains a simulator, which simulates multiple 
 functions. Furthermore, it defines an interface for the different database writers which is
 implemented in the other three packages.
 
+## Setup instructions
+
+In order to save function invocation logs to all three databases you need to have the 
+database instances running and following property files located in the `database` folder in the 
+root directory:
+
+### MySQL
+
+database/mysql.properties
+
+```properties
+USER=username
+PASSWORD=password
+DB_INSTANCE=host
+DB_NAME=database_name
+```
+
+### InfluxDB
+database/influxdb.properties
+```properties
+token=token
+bucket=bucket_name
+org=org_name
+url=url
+```
+
+### DynamoDB
+database/dynamodb.properties
+```properties
+aws_access_key_id = aws_access_key_id
+aws_secret_access_key = aws_secret_access_key
+table = table_name
+```
+
+
+

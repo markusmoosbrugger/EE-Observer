@@ -12,7 +12,7 @@
     <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
         <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
             <driverClass>com.mysql.cj.jdbc.Driver</driverClass>
-            <url>jdbc:mysql://${DB_INSTANCE}:3306/ee_logging?useSSL=false</url>
+            <url>jdbc:mysql://${DB_INSTANCE}:3306/${DB_NAME}?useSSL=false</url>
             <user>${USER}</user>
             <password>${PASSWORD}</password>
         </connectionSource>
