@@ -3,7 +3,7 @@ package at.markusmoosbrugger.dynamodb;
 import at.markusmoosbrugger.functioninvocation.FunctionInvocationSimulator;
 
 public class DynamoRunner {
-  protected static String pathToPropertiesFile = "./src/main/resources/dynamodb.credentials";
+  protected static String pathToPropertiesFile = "./database/dynamodb.credentials";
 
   public static void main(String[] args) {
     DynamoDBWriter writer = new DynamoDBWriter();

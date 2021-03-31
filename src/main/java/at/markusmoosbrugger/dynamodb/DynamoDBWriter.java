@@ -21,7 +21,7 @@ import java.util.Properties;
 
 public class DynamoDBWriter implements FunctionInvocationWriter {
 
-  protected static String pathToPropertiesFile = "./src/main/resources/dynamodb.credentials";
+  protected static String pathToPropertiesFile = "./database/dynamodb.properties";
   protected Logger logger;
   protected Table invocationsTable;
   protected String tableName;

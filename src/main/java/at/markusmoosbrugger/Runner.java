@@ -16,6 +16,6 @@ public class Runner {
     simulator.addWriter(influxWriter);
     simulator.addWriter(dynamoDBWriter);
 
-    simulator.simulateMultipleFunctions(10, 10);
+    simulator.simulateMultipleFunctions(10, 1);
   }
 }

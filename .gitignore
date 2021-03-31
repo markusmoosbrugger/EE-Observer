@@ -1,9 +1,7 @@
 /build/
 /.gradle/
-/database/*.env
+/database/*.properties
 .classpath
-/src/main/resources/dynamodb.credentials
-/src/main/resources/influxdb.properties
 
 bin/
 .settings/
