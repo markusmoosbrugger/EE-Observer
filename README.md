@@ -28,7 +28,7 @@ root directory:
 
 ### MySQL
 
-database/mysql.properties
+`database/mysql.properties`
 
 ```properties
 USER=username
@@ -38,7 +38,8 @@ DB_NAME=database_name
 ```
 
 ### InfluxDB
-database/influxdb.properties
+`database/influxdb.properties`
+
 ```properties
 token=token
 bucket=bucket_name
@@ -47,11 +48,12 @@ url=url
 ```
 
 ### DynamoDB
-database/dynamodb.properties
+`database/dynamodb.properties
+`
 ```properties
-aws_access_key_id = aws_access_key_id
-aws_secret_access_key = aws_secret_access_key
-table = table_name
+aws_access_key_id=aws_access_key_id
+aws_secret_access_key=aws_secret_access_key
+table=table_name
 ```
 
 
