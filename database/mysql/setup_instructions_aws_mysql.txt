@@ -7,8 +7,8 @@
     - Templates: Free Tier
     - Settings:
         - DB instance identifier: ee-logging
-        - Master username (--> store in credentials.env)
-        - Master password (--> store in credentials.env)
+        - Master username
+        - Master password
     - DB instance class: db.t2.micro (included in AWS free tier)
     - Storage:
         - Storage type: General Purpose (SSD)

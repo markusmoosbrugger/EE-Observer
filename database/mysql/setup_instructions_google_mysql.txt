@@ -7,7 +7,7 @@
     - Enable Compute Engine API
     - Instance info:
         - Instance id: ee-logging
-        - Password (--> store in credentials.env)
+        - Password
         - Database version: MySQL 8.0
     - Region and zonal availability
         - Region: europe-west3 (Frankfurt)
