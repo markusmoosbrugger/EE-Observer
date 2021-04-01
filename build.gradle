@@ -17,6 +17,7 @@ jacoco {
     toolVersion = "0.8.5"
 }
 
+mainClassName = 'at.markusmoosbrugger.Runner'
 
 group 'org.example'
 version '1.0-SNAPSHOT'

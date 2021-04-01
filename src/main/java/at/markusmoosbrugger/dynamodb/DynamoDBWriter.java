@@ -21,15 +21,17 @@ import java.util.Properties;
 
 public class DynamoDBWriter implements FunctionInvocationWriter {
 
-  protected static String pathToPropertiesFile = "./database/dynamodb.properties";
+  protected static String pathToPropertiesFile = "./database/dynamodb/dynamodb.properties";
   protected Logger logger;
   protected Table invocationsTable;
   protected String tableName;
+  protected String region;
 
 
   public DynamoDBWriter() {
     logger = LoggerFactory.getLogger(DynamoDBWriter.class);
     BasicAWSCredentials awsCreds = null;
+    // TODO: extract method
     try (InputStream input = new FileInputStream(pathToPropertiesFile)) {
       Properties properties = new Properties();
       properties.load(input);
@@ -39,6 +41,7 @@ public class DynamoDBWriter implements FunctionInvocationWriter {
       awsCreds = new BasicAWSCredentials(accessKeyId, secretAccessKey);
 
       this.tableName = (String) properties.get("table");
+      this.region = (String) properties.get("region");
 
     } catch (FileNotFoundException e) {
       logger.error("Credentials file not found. ", e);
@@ -47,7 +50,7 @@ public class DynamoDBWriter implements FunctionInvocationWriter {
     }
     AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
         .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-        .withRegion(Regions.EU_CENTRAL_1).build();
+        .withRegion(this.region).build();
 
 
     DynamoDB dynamoDB = new DynamoDB(client);

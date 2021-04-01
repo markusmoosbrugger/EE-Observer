@@ -1,7 +1,6 @@
 Properties which could be stored in the function DB:
     - function ID: string
     - function type: string
-    - execution time: int/double
+    - execution time: double
     - success: boolean
-    - input: JsonObject (how to store in DB?)
-    - result: JsonObject (how to store in DB?, how does an unsuccessful execution look like?)
+    - inputComplexity: double

@@ -5,6 +5,7 @@
 logging_event_property). This may be done with the ddl script provided in this folder
 (logback_db_definition.ddl).
 
-3. Configure database url, user and password in the `logback.xml` config file. For the username and
-password I used the `credentials.env` file located in this folder to avoid uploading credentials to
-git repositories.
+3. Configure database url, database name, user and password which are accessed in the `logback.xml`
+config file.
+I wrote these values into the `mysql.properties` file located in this folder to avoid uploading
+credentials to git repositories.

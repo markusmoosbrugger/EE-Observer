@@ -1,5 +1,5 @@
 <configuration>
-    <property file="database/mysql_google.properties"/>
+    <property file="database/mysql/mysql.properties"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
@@ -12,9 +12,9 @@
     <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
         <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">
             <driverClass>com.mysql.cj.jdbc.Driver</driverClass>
-            <url>jdbc:mysql://${DB_INSTANCE}:3306/${DB_NAME}?useSSL=false</url>
-            <user>${USER}</user>
-            <password>${PASSWORD}</password>
+            <url>jdbc:mysql://${db_instance}:3306/${db_name}?useSSL=false</url>
+            <user>${user}</user>
+            <password>${password}</password>
         </connectionSource>
     </appender>
 

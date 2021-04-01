@@ -9,7 +9,7 @@
 
 5. Generate an access token
 
-6. Create the file `influxdb.properties` in the folder `src/main/java/resources/` containing the
+6. Create the file `influxdb.properties` in the folder `database` containing the
 properties `token`, `bucket`, `org`, `url`
 
 7. Now you should be able to execute `InfluxRunner` and then you can have a look at the

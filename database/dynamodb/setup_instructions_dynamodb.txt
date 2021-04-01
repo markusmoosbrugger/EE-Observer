@@ -1,0 +1,21 @@
+1. Go to the AWS developer console and search for DynamoDB
+
+2. Create Table
+    - Table name: FunctionInvocations
+    - Partition key: functionId (String) --> depending on the queries it could make more sense to
+    use functionType as partition key
+    - Add sort key: timestamp (Number)
+    - Table settings: Use default settings
+    - Click on Create
+
+3. It takes a few minutes and afterwards the database instance is ready
+
+4. You can have a look at your table by going to Menu --> Tables --> Items
+
+5. To access the database from the project you need AWS access keys which can be
+created in AWS IAM (Identity and Access Management)
+    - Permissions policies: e.g. AmazonDynamoDBFullAccess
+    - Create access key and store values in `dynamodb.properties`
+
+6. Now you should be able to execute `DynamoRunner` and then you can have a look at the entries in
+your DynamoDB table
