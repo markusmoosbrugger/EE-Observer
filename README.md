@@ -46,7 +46,7 @@ respective database folders.
 
 ##### MySQL
 
-`database/mysql.properties`
+`database/mysql/mysql.properties`
 
 ```properties
 user=username
@@ -56,7 +56,7 @@ db_name=database_name
 ```
 
 ##### InfluxDB
-`database/influxdb.properties`
+`database/influxdb/influxdb.properties`
 
 ```properties
 token=token
@@ -66,7 +66,7 @@ url=url
 ```
 
 ##### DynamoDB
-`database/dynamodb.properties
+`database/dynamodb/dynamodb.properties
 `
 ```properties
 aws_access_key_id=aws_access_key_id
