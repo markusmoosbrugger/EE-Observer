@@ -51,7 +51,8 @@ respective database folders.
 ```properties
 user=username
 password=password
-db_instance=host
+db_instance=database_url | ip_address | localhost
+db_port=database_port (default 3306)
 db_name=database_name
 ```
 
