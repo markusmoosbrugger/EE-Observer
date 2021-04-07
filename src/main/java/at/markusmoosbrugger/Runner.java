@@ -1,20 +1,23 @@
 package at.markusmoosbrugger;
 
-import at.markusmoosbrugger.dynamodb.DynamoDBWriter;
 import at.markusmoosbrugger.functioninvocation.FunctionInvocationSimulator;
-import at.markusmoosbrugger.influxdb.InfluxDBWriter;
-import at.markusmoosbrugger.logback.LogbackMySQLWriter;
+import at.markusmoosbrugger.logging.dynamodb.DynamoDBEnactmentLogger;
+import at.markusmoosbrugger.logging.influxdb.InfluxDBEnactmentLogger;
+import at.markusmoosbrugger.logging.logback.LogbackEnactmentLogger;
 
 public class Runner {
   public static void main(String[] args) {
-    LogbackMySQLWriter logbackWriter = new LogbackMySQLWriter();
-    InfluxDBWriter influxWriter = new InfluxDBWriter();
-    DynamoDBWriter dynamoDBWriter = new DynamoDBWriter();
+    LogbackEnactmentLogger logbackLogger = new LogbackEnactmentLogger();
+    InfluxDBEnactmentLogger influxLogger =
+        new InfluxDBEnactmentLogger("./database/influxdb/influxdb.properties");
+    DynamoDBEnactmentLogger dynamoLogger =
+        new DynamoDBEnactmentLogger("./database/dynamodb/dynamodb.properties");
+
 
     FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
-    simulator.addWriter(logbackWriter);
-    simulator.addWriter(influxWriter);
-    simulator.addWriter(dynamoDBWriter);
+    simulator.addLogger(logbackLogger);
+    simulator.addLogger(influxLogger);
+    simulator.addLogger(dynamoLogger);
 
     simulator.simulateMultipleFunctions(10, 1);
   }

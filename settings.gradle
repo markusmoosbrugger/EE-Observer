@@ -1,2 +1,13 @@
 rootProject.name = 'DB-Writer'
 
+include 'EE-Core'
+include 'EE-Model'
+include 'EE-Guice'
+include 'EE-Enactables'
+
+project (':EE-Enactables').projectDir = new File(settingsDir, "../EE-Enactables")
+project (':EE-Core').projectDir = new File(settingsDir, "../EE-Core")
+project (':EE-Model').projectDir = new File(settingsDir, "../EE-Model")
+project (':EE-Guice').projectDir = new File(settingsDir, "../EE-Guice")
+
+

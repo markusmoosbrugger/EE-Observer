@@ -1,5 +1,7 @@
 package at.markusmoosbrugger.functioninvocation;
 
+import at.uibk.dps.ee.enactables.logging.EnactmentLogEntry;
+import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.slf4j.Logger;
@@ -13,18 +15,18 @@ public class FunctionInvocationSimulator {
 
   static final double MAX_EXECUTION_TIME = 10;
   protected Logger logger = LoggerFactory.getLogger(FunctionInvocationSimulator.class);
-  protected List<FunctionInvocationWriter> writers;
+  protected List<EnactmentLogger> loggers;
 
   public FunctionInvocationSimulator() {
-    this.writers = new ArrayList<>();
+    this.loggers = new ArrayList<>();
   }
 
-  public void addWriter(FunctionInvocationWriter writer) {
-    this.writers.add(writer);
+  public void addLogger(EnactmentLogger logger) {
+    this.loggers.add(logger);
   }
 
-  public void removeWriter(FunctionInvocationWriter writer) {
-    this.writers.remove(writer);
+  public void removeLogger(EnactmentLogger logger) {
+    this.loggers.remove(logger);
   }
 
   public void simulateMultipleFunctions(int numberOfFunctions, int numberOfRuns) {
@@ -62,8 +64,10 @@ public class FunctionInvocationSimulator {
   }
 
   private void saveFunctionInvocation(FunctionInvocation invocation) {
-    writers.stream().forEach(
-        functionInvocationWriter -> functionInvocationWriter.saveFunctionInvocation(invocation));
+    EnactmentLogEntry entry = new EnactmentLogEntry(invocation.getTime(),
+        invocation.getFunctionId(), invocation.getFunctionType(), invocation.getExecutionTime(),
+        invocation.isSuccess(), 0);
+    loggers.stream().forEach(logger -> logger.logEnactment(entry));
   }
 
 

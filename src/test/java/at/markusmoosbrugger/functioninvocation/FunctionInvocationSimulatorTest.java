@@ -1,5 +1,7 @@
 package at.markusmoosbrugger.functioninvocation;
 
+import at.uibk.dps.ee.enactables.logging.EnactmentLogEntry;
+import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -12,45 +14,45 @@ public class FunctionInvocationSimulatorTest {
   @Test public void testAddAndRemoveWriter() {
     FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
 
-    FunctionInvocationWriter writerMock1 = Mockito.mock(FunctionInvocationWriter.class);
-    FunctionInvocationWriter writerMock2 = Mockito.mock(FunctionInvocationWriter.class);
+    EnactmentLogger loggerMock1 = Mockito.mock(EnactmentLogger.class);
+    EnactmentLogger loggerMock2 = Mockito.mock(EnactmentLogger.class);
 
-    assertEquals(0, simulator.writers.size());
-    simulator.addWriter(writerMock1);
-    simulator.addWriter(writerMock2);
-    assertEquals(2, simulator.writers.size());
-    simulator.removeWriter(writerMock1);
-    assertEquals(1, simulator.writers.size());
+    assertEquals(0, simulator.loggers.size());
+    simulator.addLogger(loggerMock1);
+    simulator.addLogger(loggerMock2);
+    assertEquals(2, simulator.loggers.size());
+    simulator.removeLogger(loggerMock1);
+    assertEquals(1, simulator.loggers.size());
   }
 
   @Test public void testSimulateRun() {
     FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
 
-    FunctionInvocationWriter writerMock1 = Mockito.mock(FunctionInvocationWriter.class);
-    FunctionInvocationWriter writerMock2 = Mockito.mock(FunctionInvocationWriter.class);
+    EnactmentLogger loggerMock1 = Mockito.mock(EnactmentLogger.class);
+    EnactmentLogger loggerMock2 = Mockito.mock(EnactmentLogger.class);
 
-    simulator.writers.add(writerMock1);
-    simulator.writers.add(writerMock2);
+    simulator.loggers.add(loggerMock1);
+    simulator.loggers.add(loggerMock2);
 
     simulator.simulateRun(2);
 
-    verify(writerMock1, times(2)).saveFunctionInvocation(any(FunctionInvocation.class));
-    verify(writerMock2, times(2)).saveFunctionInvocation(any(FunctionInvocation.class));
+    verify(loggerMock1, times(2)).logEnactment(any(EnactmentLogEntry.class));
+    verify(loggerMock2, times(2)).logEnactment(any(EnactmentLogEntry.class));
 
   }
 
   @Test public void test() {
     FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
 
-    FunctionInvocationWriter writerMock1 = Mockito.mock(FunctionInvocationWriter.class);
-    FunctionInvocationWriter writerMock2 = Mockito.mock(FunctionInvocationWriter.class);
+    EnactmentLogger loggerMock1 = Mockito.mock(EnactmentLogger.class);
+    EnactmentLogger loggerMock2 = Mockito.mock(EnactmentLogger.class);
 
-    simulator.writers.add(writerMock1);
-    simulator.writers.add(writerMock2);
+    simulator.loggers.add(loggerMock1);
+    simulator.loggers.add(loggerMock2);
 
     simulator.simulateMultipleFunctions(5, 2);
 
-    verify(writerMock1, times(10)).saveFunctionInvocation(any(FunctionInvocation.class));
-    verify(writerMock2, times(10)).saveFunctionInvocation(any(FunctionInvocation.class));
+    verify(loggerMock1, times(10)).logEnactment(any(EnactmentLogEntry.class));
+    verify(loggerMock2, times(10)).logEnactment(any(EnactmentLogEntry.class));
   }
 }
