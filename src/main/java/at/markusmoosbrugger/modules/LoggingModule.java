@@ -7,7 +7,6 @@ import at.markusmoosbrugger.logging.logback.LogbackEnactmentLogger;
 import at.uibk.dps.ee.enactables.decorators.DecoratorEnactmentLogFactory;
 import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
 import at.uibk.dps.ee.guice.modules.FunctionModule;
-import ch.qos.logback.classic.util.ContextInitializer;
 import com.google.inject.multibindings.Multibinder;
 import org.opt4j.core.config.annotations.File;
 import org.opt4j.core.config.annotations.Info;
@@ -46,6 +45,7 @@ public class LoggingModule extends FunctionModule {
   @Info("The path to the logback configuration file.")
   @File
   @Required(property = "useLogback")
+  @Constant(value = "pathToLogbackConfiguration", namespace = LogbackEnactmentLogger.class)
   public String pathToLogbackConfiguration = "./logging/config/logback.xml";
 
   @Order(5)
@@ -116,8 +116,6 @@ public class LoggingModule extends FunctionModule {
   protected void bindSingleLogger() {
     if (useLogback) {
       bind(EnactmentLogger.class).to(LogbackEnactmentLogger.class);
-      // configure the location of the logback config file
-      System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, pathToLogbackConfiguration);
     } else if (useInfluxDB) {
       bind(EnactmentLogger.class).to(InfluxDBEnactmentLogger.class);
     } else if (useDynamoDB) {
@@ -133,7 +131,7 @@ public class LoggingModule extends FunctionModule {
    * @return the total number of loggers that are to be used
    */
   protected long getLoggerCount(final List<Boolean> useLoggerFlagsList) {
-    return useLoggerFlagsList.stream().filter(flag -> flag.booleanValue()).count();
+    return useLoggerFlagsList.stream().filter(Boolean::booleanValue).count();
   }
 
   public String getPathToLogbackConfiguration() {
