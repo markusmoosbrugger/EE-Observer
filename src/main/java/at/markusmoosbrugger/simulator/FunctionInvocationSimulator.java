@@ -86,7 +86,7 @@ public class FunctionInvocationSimulator {
   }
 
   private void saveFunctionInvocation(EnactmentLogEntry entry) {
-    loggers.stream().forEach(logger -> logger.logEnactment(entry));
+    loggers.stream().forEach(l -> l.logEnactment(entry));
   }
 
 
