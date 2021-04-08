@@ -20,8 +20,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * The {@link InfluxDBEnactmentLogger} is used to log information about the enactment to the
- * time-series database InfluxDB.
+ * The {@link InfluxDBEnactmentLogger} is used to log information about the
+ * enactment to the time-series database InfluxDB.
  *
  * @author Markus Moosbrugger
  */
@@ -36,8 +36,8 @@ public class InfluxDBEnactmentLogger implements EnactmentLogger {
 
 
   /**
-   * Default constructor. Reads the database configuration properties from the specified
-   * properties file and creates an InfluxDB client.
+   * Default constructor. Reads the database configuration properties from the
+   * specified properties file and creates an InfluxDB client.
    */
   @Inject
   public InfluxDBEnactmentLogger(
@@ -49,8 +49,8 @@ public class InfluxDBEnactmentLogger implements EnactmentLogger {
   }
 
   /**
-   * Additional constructor which can be used to provide a client in combination with the bucket
-   * name and the organization.
+   * Additional constructor which can be used to provide a client in combination
+   * with the bucket name and the organization.
    *
    * @param client an InfluxDB client
    * @param bucket the bucket name

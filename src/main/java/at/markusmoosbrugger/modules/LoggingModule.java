@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author Markus Moosbrugger
  */
-// TODO change to EeModule or create new module?
+// TODO change to EeModule or use FunctionModule
 public class LoggingModule extends FunctionModule {
 
   @Order(1)
@@ -91,8 +91,8 @@ public class LoggingModule extends FunctionModule {
   }
 
   /**
-   * Binds a composite enactment logger to the {@link EnactmentLogger} interface and adds the
-   * other selected loggers to the multibinder.
+   * Binds a composite enactment logger to the {@link EnactmentLogger} interface
+   * and adds the other selected loggers to the multibinder.
    */
   protected void bindCompositeLogger() {
     bind(EnactmentLogger.class).to(CompositeEnactmentLogger.class);
@@ -101,8 +101,6 @@ public class LoggingModule extends FunctionModule {
 
     if (useLogback) {
       multibinder.addBinding().to(LogbackEnactmentLogger.class);
-      // configure the location of the logback config file
-      System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, pathToLogbackConfiguration);
     }
     if (useInfluxDB) {
       multibinder.addBinding().to(InfluxDBEnactmentLogger.class);
@@ -130,8 +128,8 @@ public class LoggingModule extends FunctionModule {
   /**
    * Returns the number of true values in the given list of booleans.
    *
-   * @param useLoggerFlagsList the list of boolean values where a true value specifies that the
-   *                           respective logger is to be used
+   * @param useLoggerFlagsList the list of boolean values where a true value
+   *                           specifies that the respective logger is used
    * @return the total number of loggers that are to be used
    */
   protected long getLoggerCount(final List<Boolean> useLoggerFlagsList) {

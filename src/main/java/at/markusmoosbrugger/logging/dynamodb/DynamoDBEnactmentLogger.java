@@ -21,8 +21,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * The {@link DynamoDBEnactmentLogger} is used to log information about the enactment to the
- * NoSQL database DynamoDB.
+ * The {@link DynamoDBEnactmentLogger} is used to log information about the
+ * enactment to the NoSQL database DynamoDB.
  *
  * @author Markus Moosbrugger
  */
@@ -36,8 +36,9 @@ public class DynamoDBEnactmentLogger implements EnactmentLogger {
   protected DynamoDB dynamoDB;
 
   /**
-   * Default constructor. Reads the database configuration properties from the specified
-   * properties file and creates a DynamoDB object used to access the database.
+   * Default constructor. Reads the database configuration properties from the
+   * specified properties file and creates a DynamoDB object used to access the
+   * database.
    */
   @Inject
   public DynamoDBEnactmentLogger(
@@ -49,8 +50,8 @@ public class DynamoDBEnactmentLogger implements EnactmentLogger {
   }
 
   /**
-   * Additional constructor which can be used to provide a DynamoDB object combined with a name
-   * for the table.
+   * Additional constructor which can be used to provide a DynamoDB object
+   * combined with a name for the table.
    *
    * @param dynamoDB  the DynamoDB object
    * @param tableName the name of the database table
@@ -59,9 +60,6 @@ public class DynamoDBEnactmentLogger implements EnactmentLogger {
     this.dynamoDB = dynamoDB;
     this.tableName = tableName;
   }
-
-  // TODO
-  //testSaveFunctionInvocationThrowException (see old test)
 
   @Override
   public void logEnactment(final EnactmentLogEntry entry) {
