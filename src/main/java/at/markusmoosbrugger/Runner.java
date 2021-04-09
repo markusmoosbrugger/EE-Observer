@@ -13,9 +13,9 @@ public class Runner {
     LogbackEnactmentLogger logbackLogger =
         new LogbackEnactmentLogger("./logging/config/logback.xml");
     InfluxDBEnactmentLogger influxLogger =
-        new InfluxDBEnactmentLogger("./database/influxdb/influxdb.properties");
+        new InfluxDBEnactmentLogger("./config/database/influxdb/influxdb.properties");
     DynamoDBEnactmentLogger dynamoLogger =
-        new DynamoDBEnactmentLogger("./database/dynamodb/dynamodb.properties");
+        new DynamoDBEnactmentLogger("./config/database/dynamodb/dynamodb.properties");
 
 
     FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
