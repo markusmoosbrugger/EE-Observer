@@ -16,22 +16,7 @@ import org.slf4j.LoggerFactory;
  * @author Markus Moosbrugger
  */
 public class LogbackEnactmentLogger implements EnactmentLogger {
-  protected Logger logger;
-
-
-  /**
-   * Default constructor. Reads the database configuration properties from the
-   * specified properties file and creates an InfluxDB client.
-   */
-  @Inject
-  public LogbackEnactmentLogger(
-      @Constant(value = "pathToLogbackConfiguration", namespace = LogbackEnactmentLogger.class)
-      final String pathToLogbackConfiguration) {
-    // configure the location of the logback config file
-    System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, pathToLogbackConfiguration);
-    logger = LoggerFactory.getLogger(LogbackEnactmentLogger.class);
-  }
-
+  protected final Logger logger = LoggerFactory.getLogger(LogbackEnactmentLogger.class);
 
   @Override
   public void logEnactment(final EnactmentLogEntry entry) {

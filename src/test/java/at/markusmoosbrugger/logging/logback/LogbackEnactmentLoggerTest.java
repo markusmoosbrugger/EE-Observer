@@ -21,7 +21,7 @@ public class LogbackEnactmentLoggerTest {
     boolean success = true;
     double inputComplexity = 0.8;
 
-    LogbackEnactmentLogger logbackEnactmentLogger = new LogbackEnactmentLogger("");
+    LogbackEnactmentLogger logbackEnactmentLogger = new LogbackEnactmentLogger();
     Logger logger = (Logger) logbackEnactmentLogger.logger;
 
     ListAppender<ILoggingEvent> listAppender = new ListAppender<>();

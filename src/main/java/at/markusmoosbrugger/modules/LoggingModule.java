@@ -7,6 +7,7 @@ import at.markusmoosbrugger.logging.logback.LogbackEnactmentLogger;
 import at.uibk.dps.ee.enactables.decorators.DecoratorEnactmentLogFactory;
 import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
 import at.uibk.dps.ee.guice.modules.FunctionModule;
+import ch.qos.logback.classic.util.ContextInitializer;
 import com.google.inject.multibindings.Multibinder;
 import org.opt4j.core.config.annotations.File;
 import org.opt4j.core.config.annotations.Info;
@@ -100,6 +101,9 @@ public class LoggingModule extends FunctionModule {
         Multibinder.newSetBinder(binder(), EnactmentLogger.class);
 
     if (useLogback) {
+      // configure the location of the logback config file
+      // must be set before the first call to LoggerFactory.getLogger();
+      System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, pathToLogbackConfiguration);
       multibinder.addBinding().to(LogbackEnactmentLogger.class);
     }
     if (useInfluxDB) {
@@ -115,6 +119,8 @@ public class LoggingModule extends FunctionModule {
    */
   protected void bindSingleLogger() {
     if (useLogback) {
+      // configure the location of the logback config file
+      System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, pathToLogbackConfiguration);
       bind(EnactmentLogger.class).to(LogbackEnactmentLogger.class);
     } else if (useInfluxDB) {
       bind(EnactmentLogger.class).to(InfluxDBEnactmentLogger.class);
