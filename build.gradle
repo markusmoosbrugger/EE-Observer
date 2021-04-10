@@ -17,9 +17,10 @@ jacoco {
     toolVersion = "0.8.5"
 }
 
-mainClassName = 'at.markusmoosbrugger.Runner'
+//mainClassName = 'at.markusmoosbrugger.Runner'
 
-group 'org.example'
+
+group 'EE-DB-WRITER'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -30,11 +31,8 @@ repositories {
     }
 }
 
-sourceCompatibility = 11
-
 dependencies {
     // dependencies to other parts of the Apollo Core EE
-    // TODO check if all of them are needed
     if (project.hasProperty("local")) {
         implementation project (':EE-Core')
         implementation project (':EE-Guice')

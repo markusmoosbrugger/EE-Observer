@@ -1,5 +1,3 @@
-rootProject.name = 'DB-Writer'
-
 if(startParameter.projectProperties.containsKey("local")) {
     include 'EE-Core'
     include 'EE-Model'

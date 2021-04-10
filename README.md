@@ -1,25 +1,28 @@
 [![EE DB CI Java Repository](https://github.com/markusmoosbrugger/EE-DB-Writer/actions/workflows/gradle.yml/badge.svg)](https://github.com/markusmoosbrugger/EE-DB-Writer/actions/workflows/gradle.yml)
 
-# EE-DB-Writer
+# EE-Observer
 
-Project containing database writers to log function invocation properties to the databases MySQL,
-InfluxDB and DynamoDB.
+Project implementing the logging and monitoring functionality of Apollo.
 
-The package `logback` contains a simple logger which uses a logback DB appender to store function
-invocation parameters such as function id, function type, success and execution time to a 
-relational MySQL database. Here I tested the logging functionality with a local MySQL database, 
+Currently the project contains three database writers to log function invocation properties to the 
+databases MySQL, InfluxDB and DynamoDB.
+
+The package `logging.logback` contains a simple logger which uses a logback DB appender to store 
+function invocation parameters to a relational MySQL database. Here I tested the logging functionality with a local MySQL database, 
 as well as a database hosted in AWS and Google.
 
-The package `influxdb` contains a database writer which stores similar function parameters to the
-time series database InfluxDB. Furthermore it contains an POJO `InfluxFunction` which defines the
-properties which are stored in the DB.
+The package `logging.influxdb` contains a database logger which stores similar function parameters 
+to the time series database InfluxDB. 
 
-The package `dynamodb` contains a database writer which stores the function invocations to a
+The package `logging.dynamodb` contains a database logger which stores the function invocations to a
 DynamoDB table hosted on AWS.
 
-The package `functioninvocation` contains a simulator, which simulates multiple runs of multiple
-functions. Furthermore, it defines an interface for the different database writers which is
-implemented in the other three packages.
+The `CompositeEnactmentLogger` in the package `logging.composite` may be used to use multiple 
+loggers at the same time in order to store information about function invocations on different 
+databases.
+
+The package `simulator` contains a simulator, which simulates multiple runs of multiple
+function invocations.
 
 ## Setup
 
@@ -79,7 +82,7 @@ region=region
 ```
 
 ### Project Setup
-1. Using the terminal, switch to the root directory of the project and run `gradle build` to 
+1. Using the terminal, switch to the root directory of the project and run `gradlew build` to 
    download the dependencies and build the project.
 
 
@@ -104,7 +107,7 @@ region=region
    Please make sure that the path to your logger configurations/properties is 
    set correctly.
    
-3. Click on Run. The function invocations should now be logged with your selected loggers.
+3. Click on Run. The function invocations should now be logged with the selected loggers.
 
 
 ## Contact
