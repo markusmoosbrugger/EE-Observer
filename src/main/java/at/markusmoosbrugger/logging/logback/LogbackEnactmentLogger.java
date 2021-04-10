@@ -2,9 +2,6 @@ package at.markusmoosbrugger.logging.logback;
 
 import at.uibk.dps.ee.enactables.logging.EnactmentLogEntry;
 import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
-import ch.qos.logback.classic.util.ContextInitializer;
-import com.google.inject.Inject;
-import org.opt4j.core.start.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
