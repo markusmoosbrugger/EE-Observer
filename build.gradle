@@ -20,7 +20,7 @@ jacoco {
 //mainClassName = 'at.markusmoosbrugger.Runner'
 
 
-group 'EE-DB-WRITER'
+group 'EE-Observer'
 version '1.0-SNAPSHOT'
 
 repositories {
