@@ -22,7 +22,7 @@
         <appender-ref ref="STDOUT" />
     </root>
 
-    <logger name="at.markusmoosbrugger.logging.logback.LogbackEnactmentLogger" level="INFO"
+    <logger name="at.uibk.dps.ee.observer.logging.logback.LogbackEnactmentLogger" level="INFO"
             additivity="true">
         <appender-ref ref="DB" />
     </logger>
