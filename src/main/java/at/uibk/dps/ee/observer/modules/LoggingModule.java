@@ -3,6 +3,7 @@ package at.uibk.dps.ee.observer.modules;
 import at.uibk.dps.ee.observer.logging.composite.CompositeEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.dynamodb.DynamoDBEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.influxdb.InfluxDBEnactmentLogger;
+import at.uibk.dps.ee.observer.logging.jdbc.JdbcEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.logback.LogbackEnactmentLogger;
 import at.uibk.dps.ee.enactables.decorators.DecoratorEnactmentLogFactory;
 import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
@@ -73,11 +74,24 @@ public class LoggingModule extends FunctionModule {
   @Constant(value = "pathToDynamoDBProperties", namespace = DynamoDBEnactmentLogger.class)
   public String pathToDynamoDBProperties = "./logging/config/database/dynamodb/dynamodb.properties";
 
+  @Order(9)
+  @Info("If checked, the execution properties are logged to a JDBC compatible database.")
+  @Required(property = "logFunctionProperties")
+  public boolean useJdbc;
+
+  @Order(10)
+  @Info("The path to the JDBC properties file.")
+  @File
+  @Required(property = "useJdbc")
+  @Constant(value = "pathToJdbcProperties", namespace = JdbcEnactmentLogger.class)
+  public String pathToJdbcProperties = "./logging/config/database/jdbc/jdbc.properties";
+
+
   @Override
   protected void config() {
     if (logFunctionProperties) {
       final long loggerCount =
-          getLoggerCount(Arrays.asList(new Boolean[] {useLogback, useInfluxDB, useDynamoDB}));
+          getLoggerCount(Arrays.asList(new Boolean[] {useLogback, useInfluxDB, useDynamoDB, useJdbc}));
 
       if (loggerCount == 0) {
         return;
@@ -112,6 +126,9 @@ public class LoggingModule extends FunctionModule {
     if (useDynamoDB) {
       multibinder.addBinding().to(DynamoDBEnactmentLogger.class);
     }
+    if (useJdbc) {
+      multibinder.addBinding().to(JdbcEnactmentLogger.class);
+    }
   }
 
   /**
@@ -126,6 +143,8 @@ public class LoggingModule extends FunctionModule {
       bind(EnactmentLogger.class).to(InfluxDBEnactmentLogger.class);
     } else if (useDynamoDB) {
       bind(EnactmentLogger.class).to(DynamoDBEnactmentLogger.class);
+    } else if (useJdbc) {
+      bind(EnactmentLogger.class).to(JdbcEnactmentLogger.class);
     }
   }
 
@@ -162,6 +181,14 @@ public class LoggingModule extends FunctionModule {
 
   public void setPathToDynamoDBProperties(final String pathToDynamoDBProperties) {
     this.pathToDynamoDBProperties = pathToDynamoDBProperties;
+  }
+
+  public String getPathToJdbcProperties() {
+    return pathToJdbcProperties;
+  }
+
+  public void setPathToJdbcProperties(String pathToJdbcProperties) {
+    this.pathToJdbcProperties = pathToJdbcProperties;
   }
 
   public boolean isLogFunctionProperties() {
@@ -203,4 +230,13 @@ public class LoggingModule extends FunctionModule {
   public void setUseDynamoDB(final boolean useDynamoDB) {
     this.useDynamoDB = useDynamoDB;
   }
+
+  public boolean isUseJdbc() {
+    return useJdbc;
+  }
+
+  public void setUseJdbc(boolean useJdbc) {
+    this.useJdbc = useJdbc;
+  }
+
 }
