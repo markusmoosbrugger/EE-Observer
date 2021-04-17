@@ -5,6 +5,7 @@ import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.WriteApi;
 import com.influxdb.client.write.Point;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
 
@@ -24,7 +25,7 @@ public class InfluxDBEnactmentLoggerTest {
     double executionTime = 1.12;
     boolean success = true;
     double inputComplexity = 0.9;
-    Instant timestamp = Instant.now();
+    Instant timestamp = Instant.ofEpochMilli(1618674847123l);
 
     InfluxDBClient clientMock = mock(InfluxDBClient.class);
     WriteApi writeApiMock = mock(WriteApi.class);
@@ -37,8 +38,14 @@ public class InfluxDBEnactmentLoggerTest {
     when(clientMock.getWriteApi()).thenReturn(writeApiMock);
     influxDBLogger.logEnactment(entry);
 
-    // TODO: how to check attributes of Point
-    verify(writeApiMock).writePoint(eq("testbucket"), eq("testorg"), any(Point.class));
+    ArgumentCaptor acPoint = ArgumentCaptor.forClass(Point.class);
+    verify(writeApiMock).writePoint(eq("testbucket"), eq("testorg"), (Point) acPoint.capture());
+
+    Point capturedPoint = (Point) acPoint.getValue();
+    String expectedLineProtocol = "Enactment,functionId=id,functionType=type executionTime=1.12,"
+        + "inputComplexity=0.9,success=true 1618674847123000000";
+
+    assertEquals(expectedLineProtocol, capturedPoint.toLineProtocol());
   }
 
   @Test

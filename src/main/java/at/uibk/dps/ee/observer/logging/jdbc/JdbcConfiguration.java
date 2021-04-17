@@ -3,6 +3,10 @@ package at.uibk.dps.ee.observer.logging.jdbc;
 import java.security.InvalidParameterException;
 import java.util.Properties;
 
+/**
+ *
+ * @author Markus Moosbrugger
+ */
 public class JdbcConfiguration {
   protected String user;
   protected String password;
@@ -31,39 +35,19 @@ public class JdbcConfiguration {
     return user;
   }
 
-  public void setUser(String user) {
-    this.user = user;
-  }
-
   public String getPassword() {
     return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public String getInstance() {
     return instance;
   }
 
-  public void setInstance(String instance) {
-    this.instance = instance;
-  }
-
   public int getPort() {
     return port;
   }
 
-  public void setPort(int port) {
-    this.port = port;
-  }
-
   public String getDatabaseName() {
     return databaseName;
-  }
-
-  public void setDatabaseName(String databaseName) {
-    this.databaseName = databaseName;
   }
 }

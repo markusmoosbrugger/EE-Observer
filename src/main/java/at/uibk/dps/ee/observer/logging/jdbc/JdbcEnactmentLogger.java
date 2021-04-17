@@ -20,6 +20,8 @@ import java.util.Properties;
  * such as MySQL, PostgreSQL or Microsoft SQL Server. The current implementation of this class,
  * however, supports only MySQL databases and the method {@link #initConnection()} must be adapted
  * in order to support other databases.
+ *
+ * @author Markus Moosbrugger
  */
 public class JdbcEnactmentLogger implements EnactmentLogger {
 
@@ -41,14 +43,22 @@ public class JdbcEnactmentLogger implements EnactmentLogger {
   }
 
   /**
+   * Additional constructor which can be used to provide a SQL connection.
+   *
+   * @param connection the SQL connection
+   */
+  public JdbcEnactmentLogger(Connection connection) {
+    this.connection = connection;
+  }
+
+  /**
    * Initializes the connection to the MySQL database.
    *
    * @return the connection
    */
-  protected Connection initConnection() {
-    String url =
-        "jdbc:mysql://" + configuration.getInstance() + ":" + configuration.getPort() + "/"
-            + configuration.getDatabaseName();
+  private Connection initConnection() {
+    String url = "jdbc:mysql://" + configuration.getInstance() + ":" + configuration.getPort() + "/"
+        + configuration.getDatabaseName();
     Connection conn = null;
     try {
       conn = DriverManager.getConnection(url, configuration.getUser(), configuration.getPassword());
@@ -60,11 +70,11 @@ public class JdbcEnactmentLogger implements EnactmentLogger {
 
   @Override
   public void logEnactment(EnactmentLogEntry entry) {
-    try {
-      PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO enactment "
-          + "(timestamp, functionType, functionId, executionTime, inputComplexity, success) "
-          + "values (?,?,?,?,?,?)");
+    String statementString = "INSERT INTO enactment "
+        + "(timestamp, functionType, functionId, executionTime, inputComplexity, success) "
+        + "values (?,?,?,?,?,?)";
 
+    try (PreparedStatement preparedStatement = connection.prepareStatement(statementString)) {
       preparedStatement.setLong(1, entry.getTimestamp().toEpochMilli());
       preparedStatement.setString(2, entry.getFunctionType());
       preparedStatement.setString(3, entry.getFunctionId());
@@ -75,7 +85,7 @@ public class JdbcEnactmentLogger implements EnactmentLogger {
       preparedStatement.executeUpdate();
 
     } catch (SQLException e) {
-      logger.error("Logging of enactment entry {} failed. ", entry.toString(), e);
+      logger.error("Logging of enactment entry {} failed.", entry, e);
     }
   }
 }
