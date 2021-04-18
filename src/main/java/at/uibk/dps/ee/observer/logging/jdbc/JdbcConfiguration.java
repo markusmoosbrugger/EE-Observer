@@ -1,21 +1,31 @@
 package at.uibk.dps.ee.observer.logging.jdbc;
 
+import at.uibk.dps.ee.observer.logging.configuration.LoggerConfiguration;
+
 import java.security.InvalidParameterException;
 import java.util.Properties;
 
 /**
+ * The {@link JdbcConfiguration} defines the properties required for connecting to a JDBC-compliant
+ * database.
  *
  * @author Markus Moosbrugger
  */
-public class JdbcConfiguration {
+public class JdbcConfiguration extends LoggerConfiguration {
   protected String user;
   protected String password;
   protected String instance;
   protected int port;
   protected String databaseName;
 
+  /**
+   * The default constructor.
+   *
+   * @param properties the properties for using JDBC
+   */
   public JdbcConfiguration(Properties properties) {
-    validateProperties(properties);
+    super(properties);
+
     this.user = properties.getProperty("user");
     this.password = properties.getProperty("password");
     this.instance = properties.getProperty("db_instance");
@@ -23,6 +33,8 @@ public class JdbcConfiguration {
     this.databaseName = properties.getProperty("db_name");
   }
 
+
+  @Override
   protected void validateProperties(Properties properties) {
     if (!properties.containsKey("user") || !properties.containsKey("password") || !properties
         .containsKey("db_instance") || !properties.containsKey("db_name") || !properties

@@ -7,14 +7,23 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 public class DynamoDBEnactmentLoggerTest {
-  public static String testPropertiesPath = "./src/test/resources/dynamodb-test.properties";
 
+  private DynamoDBConfiguration getTestConfiguration() {
+    Properties properties = new Properties();
+    properties.put("aws_access_key_id", "testaccesskeyid");
+    properties.put("aws_secret_access_key", "testsecretaccesskey");
+    properties.put("region", "testregion");
+    properties.put("table", "testtable");
+
+    DynamoDBConfiguration configuration = new DynamoDBConfiguration(properties);
+
+    return configuration;
+  }
 
   @Test
   public void testLogEnactment() {
@@ -27,7 +36,8 @@ public class DynamoDBEnactmentLoggerTest {
 
     Table tableMock = mock(Table.class);
     DynamoDB dynamoDBMock = mock(DynamoDB.class);
-    DynamoDBEnactmentLogger dynamoDBLogger = new DynamoDBEnactmentLogger(dynamoDBMock, "testtable");
+    DynamoDBEnactmentLogger dynamoDBLogger =
+        new DynamoDBEnactmentLogger(dynamoDBMock, getTestConfiguration());
 
     when(dynamoDBMock.getTable("testtable")).thenReturn(tableMock);
 
@@ -41,24 +51,5 @@ public class DynamoDBEnactmentLoggerTest {
         .withDouble("executionTime", executionTime).with("inputComplexity", inputComplexity);
 
     verify(tableMock).putItem(item);
-  }
-
-  @Test
-  public void readProperties() {
-    DynamoDB dynamoDBMock = mock(DynamoDB.class);
-    DynamoDBEnactmentLogger dynamoDBLogger = new DynamoDBEnactmentLogger(dynamoDBMock, "tablename");
-
-    assertNull(dynamoDBLogger.accessKeyId);
-    assertNull(dynamoDBLogger.secretAccessKey);
-    assertNull(dynamoDBLogger.region);
-    assertEquals("tablename", dynamoDBLogger.tableName);
-
-    dynamoDBLogger.pathToPropertiesFile = testPropertiesPath;
-    dynamoDBLogger.readProperties();
-
-    assertEquals("testaccesskeyid", dynamoDBLogger.accessKeyId);
-    assertEquals("testsecretaccesskey", dynamoDBLogger.secretAccessKey);
-    assertEquals("testregion", dynamoDBLogger.region);
-    assertEquals("testtable", dynamoDBLogger.tableName);
   }
 }

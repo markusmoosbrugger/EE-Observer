@@ -36,19 +36,88 @@ public class LoggingModuleTest {
   }
 
   @Test
-  public void testConfigSingleLogger() {
+  public void testConfigLogbackLogger() {
     LoggingModule module = new LoggingModule();
     LoggingModule moduleSpy = Mockito.spy(module);
+    String logbackConfigPath = "./testpath/logback";
 
     doNothing().when(moduleSpy).bindSingleLogger();
     doNothing().when(moduleSpy).addFunctionDecoratorFactory(any());
 
     moduleSpy.setLogFunctionProperties(true);
     moduleSpy.setUseLogback(true);
+    moduleSpy.setPathToLogbackConfiguration(logbackConfigPath);
     moduleSpy.config();
 
     verify(moduleSpy).bindSingleLogger();
     verify(moduleSpy, never()).bindCompositeLogger();
+
+    assertTrue(moduleSpy.isLogFunctionProperties());
+    assertTrue(moduleSpy.isUseLogback());
+    assertEquals(logbackConfigPath, moduleSpy.getPathToLogbackConfiguration());
+  }
+
+  @Test
+  public void testConfigInfluxDBLogger() {
+    LoggingModule module = new LoggingModule();
+    LoggingModule moduleSpy = Mockito.spy(module);
+    String influxDBConfigPath = "./testpath/influxdb";
+
+    doNothing().when(moduleSpy).bindSingleLogger();
+    doNothing().when(moduleSpy).addFunctionDecoratorFactory(any());
+
+    moduleSpy.setLogFunctionProperties(true);
+    moduleSpy.setUseInfluxDB(true);
+    moduleSpy.setPathToInfluxDBProperties(influxDBConfigPath);
+    moduleSpy.config();
+
+    verify(moduleSpy).bindSingleLogger();
+    verify(moduleSpy, never()).bindCompositeLogger();
+
+    assertTrue(moduleSpy.isUseInfluxDB());
+    assertEquals(influxDBConfigPath, moduleSpy.getPathToInfluxDBProperties());
+  }
+
+  @Test
+  public void testConfigDynamoDBLogger() {
+    LoggingModule module = new LoggingModule();
+    LoggingModule moduleSpy = Mockito.spy(module);
+    String dynamoDBConfigPath = "./testpath/dynamodb";
+
+    doNothing().when(moduleSpy).bindSingleLogger();
+    doNothing().when(moduleSpy).addFunctionDecoratorFactory(any());
+
+    moduleSpy.setLogFunctionProperties(true);
+    moduleSpy.setUseDynamoDB(true);
+    moduleSpy.setPathToDynamoDBProperties(dynamoDBConfigPath);
+    moduleSpy.config();
+
+    verify(moduleSpy).bindSingleLogger();
+    verify(moduleSpy, never()).bindCompositeLogger();
+
+    assertTrue(moduleSpy.isUseDynamoDB());
+    assertEquals(dynamoDBConfigPath, moduleSpy.getPathToDynamoDBProperties());
+  }
+
+  @Test
+  public void testConfigJdbcLogger() {
+    LoggingModule module = new LoggingModule();
+    LoggingModule moduleSpy = Mockito.spy(module);
+    String jdbcConfigPath = "./testpath/jdbc";
+
+    doNothing().when(moduleSpy).bindSingleLogger();
+    doNothing().when(moduleSpy).addFunctionDecoratorFactory(any());
+
+    moduleSpy.setLogFunctionProperties(true);
+    moduleSpy.setUseJdbc(true);
+    moduleSpy.setPathToJdbcProperties(jdbcConfigPath);
+    moduleSpy.config();
+
+    verify(moduleSpy).bindSingleLogger();
+    verify(moduleSpy, never()).bindCompositeLogger();
+
+    assertTrue(moduleSpy.isUseJdbc());
+    assertEquals(jdbcConfigPath, moduleSpy.getPathToJdbcProperties());
   }
 
   @Test
@@ -63,10 +132,17 @@ public class LoggingModuleTest {
     moduleSpy.setUseLogback(true);
     moduleSpy.setUseInfluxDB(true);
     moduleSpy.setUseDynamoDB(true);
+    moduleSpy.setUseJdbc(true);
     moduleSpy.config();
 
     verify(moduleSpy, never()).bindSingleLogger();
     verify(moduleSpy).bindCompositeLogger();
+
+    assertTrue(moduleSpy.isUseLogback());
+    assertTrue(moduleSpy.isUseInfluxDB());
+    assertTrue(moduleSpy.isUseDynamoDB());
+    assertTrue(moduleSpy.isUseJdbc());
+    assertTrue(moduleSpy.isLogFunctionProperties());
   }
 
   @Test

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -15,8 +16,18 @@ import static org.mockito.Mockito.*;
 
 public class InfluxDBEnactmentLoggerTest {
 
-  public static String testPropertiesPath = "./src/test/resources/influxdb-test.properties";
+  //public static String testPropertiesPath = "./src/test/resources/influxdb-test.properties";
 
+  private InfluxDBConfiguration getTestConfiguration() {
+    Properties properties = new Properties();
+    properties.put("token", "testtoken");
+    properties.put("url", "testurl");
+    properties.put("bucket", "testbucket");
+    properties.put("org", "testorg");
+    InfluxDBConfiguration configuration = new InfluxDBConfiguration(properties);
+
+    return configuration;
+  }
 
   @Test
   public void testLogEnactment() {
@@ -29,8 +40,10 @@ public class InfluxDBEnactmentLoggerTest {
 
     InfluxDBClient clientMock = mock(InfluxDBClient.class);
     WriteApi writeApiMock = mock(WriteApi.class);
+
+
     InfluxDBEnactmentLogger influxDBLogger =
-        new InfluxDBEnactmentLogger(clientMock, "testbucket", "testorg");
+        new InfluxDBEnactmentLogger(clientMock, getTestConfiguration());
 
     EnactmentLogEntry entry =
         new EnactmentLogEntry(timestamp, id, type, executionTime, success, inputComplexity);
@@ -46,23 +59,5 @@ public class InfluxDBEnactmentLoggerTest {
         + "inputComplexity=0.9,success=true 1618674847123000000";
 
     assertEquals(expectedLineProtocol, capturedPoint.toLineProtocol());
-  }
-
-  @Test
-  public void testReadProperties() {
-    InfluxDBClient clientMock = mock(InfluxDBClient.class);
-    InfluxDBEnactmentLogger influxDBLogger =
-        new InfluxDBEnactmentLogger(clientMock, "bucket", "org");
-
-    assertEquals("bucket", influxDBLogger.bucket);
-    assertEquals("org", influxDBLogger.org);
-    assertNull(influxDBLogger.url);
-
-    influxDBLogger.pathToPropertiesFile = testPropertiesPath;
-    influxDBLogger.readProperties();
-
-    assertEquals("testbucket", influxDBLogger.bucket);
-    assertEquals("testorg", influxDBLogger.org);
-    assertEquals("testurl", influxDBLogger.url);
   }
 }

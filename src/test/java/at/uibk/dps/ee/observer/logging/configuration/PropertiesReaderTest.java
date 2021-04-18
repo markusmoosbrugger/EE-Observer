@@ -1,4 +1,4 @@
-package at.uibk.dps.ee.observer.logging.properties;
+package at.uibk.dps.ee.observer.logging.configuration;
 
 import org.junit.Test;
 import org.slf4j.Logger;

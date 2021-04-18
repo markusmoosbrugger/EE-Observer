@@ -2,7 +2,7 @@ package at.uibk.dps.ee.observer.logging.jdbc;
 
 import at.uibk.dps.ee.enactables.logging.EnactmentLogEntry;
 import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
-import at.uibk.dps.ee.observer.logging.properties.PropertiesReader;
+import at.uibk.dps.ee.observer.logging.configuration.PropertiesReader;
 import com.google.inject.Inject;
 import org.opt4j.core.start.Constant;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package at.uibk.dps.ee.observer.logging.properties;
+package at.uibk.dps.ee.observer.logging.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * The {@link PropertiesReader} reads properties file.
+ *
  * @author Markus Moosbrugger
  */
 public class PropertiesReader {
@@ -19,6 +21,12 @@ public class PropertiesReader {
     throw new IllegalStateException("Utility class which should not be instantiated.");
   }
 
+  /**
+   * Reads the properties from the given path to the properties file.
+   *
+   * @param filepath the path to the file
+   * @return the properties
+   */
   public static Properties readProperties(String filepath) {
     Properties properties = new Properties();
     try {
@@ -30,6 +38,12 @@ public class PropertiesReader {
     return properties;
   }
 
+  /**
+   * Reads the properties from the given input stream.
+   *
+   * @param inputStream the input stream
+   * @return the properties
+   */
   public static Properties readProperties(FileInputStream inputStream) {
     Properties properties = new Properties();
     try (inputStream) {
