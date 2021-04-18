@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -18,15 +19,17 @@ public class JdbcEnactmentLoggerTest {
 
   @Test
   public void testLogEnactment() throws SQLException {
-    String id = "id";
-    String type = "type";
+    String typeId = "type";
+    String enactmentMode = "mode";
+    String implementationId = "id";
     double executionTime = 1.12;
     boolean success = true;
     double inputComplexity = 0.9;
     Instant timestamp = Instant.now();
 
     EnactmentLogEntry entry =
-        new EnactmentLogEntry(timestamp, id, type, executionTime, success, inputComplexity);
+        new EnactmentLogEntry(timestamp, typeId, enactmentMode, implementationId, new HashSet<>(),
+            executionTime, success, inputComplexity);
 
     Connection connectionMock = mock(Connection.class);
 
@@ -38,11 +41,12 @@ public class JdbcEnactmentLoggerTest {
     jdbcEnactmentLogger.logEnactment(entry);
 
     verify(statementMock).setLong(1, timestamp.toEpochMilli());
-    verify(statementMock).setString(2, type);
-    verify(statementMock).setString(3, id);
-    verify(statementMock).setDouble(4, executionTime);
-    verify(statementMock).setDouble(5, inputComplexity);
-    verify(statementMock).setBoolean(6, success);
+    verify(statementMock).setString(2, typeId);
+    verify(statementMock).setString(3, enactmentMode);
+    verify(statementMock).setString(4, implementationId);
+    verify(statementMock).setDouble(5, executionTime);
+    verify(statementMock).setDouble(6, inputComplexity);
+    verify(statementMock).setBoolean(7, success);
 
     verify(statementMock).executeUpdate();
   }
@@ -50,7 +54,8 @@ public class JdbcEnactmentLoggerTest {
   @Test
   public void testLogEnactmentSQLException()
       throws SQLException, NoSuchFieldException, IllegalAccessException {
-    EnactmentLogEntry entry = new EnactmentLogEntry(Instant.now(), "id", "type", 10, true, 0.8);
+    EnactmentLogEntry entry =
+        new EnactmentLogEntry(Instant.now(), "id", "mode", "implId", new HashSet<>(), 10, true, 0.8);
 
     Connection connectionMock = mock(Connection.class);
     Logger loggerMock = mock(Logger.class);

@@ -59,10 +59,12 @@ public class DynamoDBEnactmentLogger implements EnactmentLogger {
   public void logEnactment(final EnactmentLogEntry entry) {
     final Table table = dynamoDB.getTable(configuration.getTableName());
 
-    table.putItem(new Item().withPrimaryKey("functionId", entry.getFunctionId(), "timestamp",
-        entry.getTimestamp().toEpochMilli()).withBoolean("success", entry.isSuccess())
-        .withString("functionType", entry.getFunctionType())
+    table.putItem(new Item().withPrimaryKey("typeId", entry.getTypeId(),
+        "timestamp", entry.getTimestamp().toEpochMilli())
+        .withString("enactmentMode", entry.getEnactmentMode())
+        .withString("implementationId", entry.getImplementationId())
         .withDouble("executionTime", entry.getExecutionTime())
+        .withBoolean("success", entry.isSuccess())
         .withDouble("inputComplexity", entry.getInputComplexity()));
   }
 

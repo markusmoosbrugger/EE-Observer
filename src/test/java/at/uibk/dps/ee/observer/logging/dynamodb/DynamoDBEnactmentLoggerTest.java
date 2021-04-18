@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Properties;
 
 import static org.mockito.Mockito.*;
@@ -27,8 +28,10 @@ public class DynamoDBEnactmentLoggerTest {
 
   @Test
   public void testLogEnactment() {
-    String id = "id";
-    String type = "type";
+    String typeId = "type";
+    String enactmentMode = "mode";
+    String implementationId = "id";
+
     double executionTime = 1.12;
     boolean success = true;
     double inputComplexity = 0.9;
@@ -42,13 +45,18 @@ public class DynamoDBEnactmentLoggerTest {
     when(dynamoDBMock.getTable("testtable")).thenReturn(tableMock);
 
     EnactmentLogEntry entry =
-        new EnactmentLogEntry(timestamp, id, type, executionTime, success, inputComplexity);
+        new EnactmentLogEntry(timestamp, typeId, enactmentMode, implementationId, new HashSet<>(),
+            executionTime, success, inputComplexity);
 
     dynamoDBLogger.logEnactment(entry);
 
-    Item item = new Item().withPrimaryKey("functionId", id, "timestamp", timestamp.toEpochMilli())
-        .withBoolean("success", success).withString("functionType", "type")
-        .withDouble("executionTime", executionTime).with("inputComplexity", inputComplexity);
+    Item item = new Item()
+        .withPrimaryKey("typeId", typeId, "timestamp", timestamp.toEpochMilli())
+        .withString("enactmentMode", enactmentMode)
+        .withString("implementationId", implementationId)
+        .withDouble("executionTime", executionTime)
+        .withBoolean("success", success)
+        .withDouble("inputComplexity", inputComplexity);
 
     verify(tableMock).putItem(item);
   }

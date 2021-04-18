@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -79,8 +80,8 @@ public class FunctionInvocationSimulator {
       Instant timestamp = Instant.now();
 
       EnactmentLogEntry entry =
-          new EnactmentLogEntry(timestamp, functionId, functionType, executionTime, success,
-              inputComplexity);
+          new EnactmentLogEntry(timestamp, functionType, "enactmentMode", functionId,
+              new HashSet<>(), executionTime, success, inputComplexity);
       saveFunctionInvocation(entry);
     }
   }

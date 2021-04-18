@@ -8,15 +8,13 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 public class InfluxDBEnactmentLoggerTest {
-
-  //public static String testPropertiesPath = "./src/test/resources/influxdb-test.properties";
 
   private InfluxDBConfiguration getTestConfiguration() {
     Properties properties = new Properties();
@@ -31,8 +29,9 @@ public class InfluxDBEnactmentLoggerTest {
 
   @Test
   public void testLogEnactment() {
-    String id = "id";
-    String type = "type";
+    String typeId = "type";
+    String enactmentMode = "mode";
+    String implementationId = "id";
     double executionTime = 1.12;
     boolean success = true;
     double inputComplexity = 0.9;
@@ -46,7 +45,8 @@ public class InfluxDBEnactmentLoggerTest {
         new InfluxDBEnactmentLogger(clientMock, getTestConfiguration());
 
     EnactmentLogEntry entry =
-        new EnactmentLogEntry(timestamp, id, type, executionTime, success, inputComplexity);
+        new EnactmentLogEntry(timestamp, typeId, enactmentMode, implementationId, new HashSet<>(),
+            executionTime, success, inputComplexity);
 
     when(clientMock.getWriteApi()).thenReturn(writeApiMock);
     influxDBLogger.logEnactment(entry);
@@ -55,7 +55,8 @@ public class InfluxDBEnactmentLoggerTest {
     verify(writeApiMock).writePoint(eq("testbucket"), eq("testorg"), (Point) acPoint.capture());
 
     Point capturedPoint = (Point) acPoint.getValue();
-    String expectedLineProtocol = "Enactment,functionId=id,functionType=type executionTime=1.12,"
+    String expectedLineProtocol = "Enactment,enactmentMode=mode,implementationId=id,"
+        + "typeId=type executionTime=1.12,"
         + "inputComplexity=0.9,success=true 1618674847123000000";
 
     assertEquals(expectedLineProtocol, capturedPoint.toLineProtocol());

@@ -2,10 +2,12 @@
 
 2. Create Table
     - Table name: FunctionInvocations
-    - Partition key: functionId (String) --> depending on the queries it could make more sense to
-    use functionType as partition key
+    - Partition key: typeId (String)
     - Add sort key: timestamp (Number)
-    - Table settings: Use default settings
+    - Table settings: Disable default settings
+    - Secondary indexes: Add index
+        - Partition key: implementationId (String)
+        - Sort key: timestamp (Number)
     - Click on Create
 
 3. It takes a few minutes and afterwards the database instance is ready

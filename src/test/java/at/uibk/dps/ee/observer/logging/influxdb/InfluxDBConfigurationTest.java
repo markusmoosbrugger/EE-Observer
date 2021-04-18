@@ -35,14 +35,46 @@ public class InfluxDBConfigurationTest {
   }
 
   @Test(expected = InvalidParameterException.class)
-  public void testIncompleteConfiguration() {
+  public void testIncompleteConfigurationNoToken() {
+    Properties properties = new Properties();
+    properties.put("bucket", "testbucket");
+    properties.put("org", "testorg");
+    properties.put("url", "testurl");
+
+    InfluxDBConfiguration configuration = new InfluxDBConfiguration(properties);
+    fail();
+  }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoBucket() {
     Properties properties = new Properties();
     properties.put("token", "testtoken");
     properties.put("org", "testorg");
     properties.put("url", "testurl");
 
     InfluxDBConfiguration configuration = new InfluxDBConfiguration(properties);
+    fail();
+  }
 
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoOrg() {
+    Properties properties = new Properties();
+    properties.put("token", "testtoken");
+    properties.put("bucket", "testbucket");
+    properties.put("url", "testurl");
+
+    InfluxDBConfiguration configuration = new InfluxDBConfiguration(properties);
+    fail();
+  }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoUrl() {
+    Properties properties = new Properties();
+    properties.put("token", "testtoken");
+    properties.put("bucket", "testbucket");
+    properties.put("org", "testorg");
+
+    InfluxDBConfiguration configuration = new InfluxDBConfiguration(properties);
     fail();
   }
 

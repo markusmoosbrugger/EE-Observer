@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Properties;
 
@@ -110,5 +112,22 @@ public class PropertiesReaderTest {
     verify(loggerMock).error(eq("IO Exception while reading properties file with input stream."),
         any(IOException.class));
     assertTrue(properties.isEmpty());
+  }
+
+  @Test
+  public void testPrivateConstructor()
+      throws NoSuchMethodException, InstantiationException, IllegalAccessException {
+    Constructor<PropertiesReader> constructor = PropertiesReader.class.getDeclaredConstructor();
+    assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+    constructor.setAccessible(true);
+
+    try {
+      constructor.newInstance();
+    } catch (InvocationTargetException e) {
+      // Exception must be checked manually as the reflection layer wraps the
+      // IllegalStateException in an InvocationTargetException
+      assertTrue(e.getCause() instanceof IllegalStateException);
+      assertEquals("Utility class which should not be instantiated.", e.getCause().getMessage());
+    }
   }
 }

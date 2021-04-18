@@ -8,6 +8,7 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 
 public class JdbcConfigurationTest {
+
   @Test
   public void testValidConfiguration() {
     Properties properties = new Properties();
@@ -36,7 +37,55 @@ public class JdbcConfigurationTest {
   }
 
   @Test(expected = InvalidParameterException.class)
-  public void testIncompleteConfiguration() {
+  public void testIncompleteConfigurationNoUser() {
+    Properties properties = new Properties();
+    properties.put("password", "testpassword");
+    properties.put("db_instance", "testinstance");
+    properties.put("db_port", "1234");
+    properties.put("db_name", "testdbname");
+
+    JdbcConfiguration configuration = new JdbcConfiguration(properties);
+    fail();
+  }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoPassword() {
+    Properties properties = new Properties();
+    properties.put("user", "testuser");
+    properties.put("db_instance", "testinstance");
+    properties.put("db_port", "1234");
+    properties.put("db_name", "testdbname");
+
+    JdbcConfiguration configuration = new JdbcConfiguration(properties);
+    fail();
+  }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoInstance() {
+    Properties properties = new Properties();
+    properties.put("user", "testuser");
+    properties.put("password", "testpassword");
+    properties.put("db_port", "1234");
+    properties.put("db_name", "testdbname");
+
+    JdbcConfiguration configuration = new JdbcConfiguration(properties);
+    fail();
+  }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoPort() {
+    Properties properties = new Properties();
+    properties.put("user", "testuser");
+    properties.put("password", "testpassword");
+    properties.put("db_instance", "testinstance");
+    properties.put("db_name", "testdbname");
+
+    JdbcConfiguration configuration = new JdbcConfiguration(properties);
+    fail();
+  }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoDBName() {
     Properties properties = new Properties();
     properties.put("user", "testuser");
     properties.put("password", "testpassword");
@@ -44,7 +93,6 @@ public class JdbcConfigurationTest {
     properties.put("db_port", "1234");
 
     JdbcConfiguration configuration = new JdbcConfiguration(properties);
-
     fail();
   }
 }

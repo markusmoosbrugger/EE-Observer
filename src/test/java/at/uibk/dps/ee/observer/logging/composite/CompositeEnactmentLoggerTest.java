@@ -1,10 +1,10 @@
 package at.uibk.dps.ee.observer.logging.composite;
 
+import at.uibk.dps.ee.enactables.logging.EnactmentLogEntry;
+import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
 import at.uibk.dps.ee.observer.logging.dynamodb.DynamoDBEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.influxdb.InfluxDBEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.logback.LogbackEnactmentLogger;
-import at.uibk.dps.ee.enactables.logging.EnactmentLogEntry;
-import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
 import org.junit.Test;
 
 import java.time.Instant;
@@ -18,14 +18,17 @@ public class CompositeEnactmentLoggerTest {
 
   @Test
   public void testLogEnactment() {
-    String id = "id";
-    String type = "type";
+    String typeId = "type";
+    String enactmentMode = "mode";
+    String implementationId = "id";
+
     double executionTime = 1.12;
     boolean success = true;
     double inputComplexity = 0.9;
     Instant timestamp = Instant.now();
     EnactmentLogEntry entry =
-        new EnactmentLogEntry(timestamp, id, type, executionTime, success, inputComplexity);
+        new EnactmentLogEntry(timestamp, typeId, enactmentMode, implementationId, new HashSet<>(),
+            executionTime, success, inputComplexity);
 
     Set<EnactmentLogger> loggers = new HashSet<>();
 

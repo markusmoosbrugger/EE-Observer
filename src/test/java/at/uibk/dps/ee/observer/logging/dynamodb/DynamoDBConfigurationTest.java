@@ -8,6 +8,7 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 
 public class DynamoDBConfigurationTest {
+
   @Test
   public void testValidConfiguration() {
     Properties properties = new Properties();
@@ -29,19 +30,52 @@ public class DynamoDBConfigurationTest {
   public void testEmptyConfiguration() {
     Properties properties = new Properties();
     DynamoDBConfiguration configuration = new DynamoDBConfiguration(properties);
-
     fail();
   }
 
   @Test(expected = InvalidParameterException.class)
-  public void testIncompleteConfiguration() {
+  public void testIncompleteConfigurationNoAccessId(){
+    Properties properties = new Properties();
+
+    properties.put("aws_secret_access_key", "testsecretaccesskey");
+    properties.put("region", "testregion");
+    properties.put("table", "testtable");
+
+    DynamoDBConfiguration configuration = new DynamoDBConfiguration(properties);
+    fail();
+  }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoSecretKey() {
+    Properties properties = new Properties();
+
+    properties.put("aws_access_key_id", "testaccesskeyid");
+    properties.put("region", "testregion");
+    properties.put("table", "testtable");
+
+    DynamoDBConfiguration configuration = new DynamoDBConfiguration(properties);
+    fail();
+  }
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoRegion() {
     Properties properties = new Properties();
     properties.put("aws_access_key_id", "testaccesskeyid");
     properties.put("aws_secret_access_key", "testsecretaccesskey");
     properties.put("table", "testtable");
 
     DynamoDBConfiguration configuration = new DynamoDBConfiguration(properties);
-
     fail();
   }
+
+  @Test(expected = InvalidParameterException.class)
+  public void testIncompleteConfigurationNoTable() {
+    Properties properties = new Properties();
+    properties.put("aws_access_key_id", "testaccesskeyid");
+    properties.put("aws_secret_access_key", "testsecretaccesskey");
+    properties.put("region", "testregion");
+
+    DynamoDBConfiguration configuration = new DynamoDBConfiguration(properties);
+    fail();
+  }
+
 }

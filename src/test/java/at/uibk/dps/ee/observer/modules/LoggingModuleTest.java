@@ -1,5 +1,6 @@
 package at.uibk.dps.ee.observer.modules;
 
+import at.uibk.dps.ee.observer.logging.jdbc.JdbcEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.logback.LogbackEnactmentLogger;
 import at.uibk.dps.ee.enactables.logging.EnactmentLogger;
 import com.google.inject.ConfigurationException;

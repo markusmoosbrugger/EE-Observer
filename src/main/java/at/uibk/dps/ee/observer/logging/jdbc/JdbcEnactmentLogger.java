@@ -71,16 +71,17 @@ public class JdbcEnactmentLogger implements EnactmentLogger {
   @Override
   public void logEnactment(EnactmentLogEntry entry) {
     String statementString = "INSERT INTO enactment "
-        + "(timestamp, functionType, functionId, executionTime, inputComplexity, success) "
-        + "values (?,?,?,?,?,?)";
+        + "(timestamp, typeId, enactmentMode, implementationId, executionTime, inputComplexity, "
+        + "success) values (?,?,?,?,?,?,?)";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(statementString)) {
       preparedStatement.setLong(1, entry.getTimestamp().toEpochMilli());
-      preparedStatement.setString(2, entry.getFunctionType());
-      preparedStatement.setString(3, entry.getFunctionId());
-      preparedStatement.setDouble(4, entry.getExecutionTime());
-      preparedStatement.setDouble(5, entry.getInputComplexity());
-      preparedStatement.setBoolean(6, entry.isSuccess());
+      preparedStatement.setString(2, entry.getTypeId());
+      preparedStatement.setString(3, entry.getEnactmentMode());
+      preparedStatement.setString(4, entry.getImplementationId());
+      preparedStatement.setDouble(5, entry.getExecutionTime());
+      preparedStatement.setDouble(6, entry.getInputComplexity());
+      preparedStatement.setBoolean(7, entry.isSuccess());
 
       preparedStatement.executeUpdate();
 
