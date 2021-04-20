@@ -7,15 +7,21 @@ Project implementing the logging and monitoring functionality of Apollo.
 Currently the project contains three database writers to log function invocation properties to the 
 databases MySQL, InfluxDB and DynamoDB.
 
-The package `logging.logback` contains a simple logger which uses a logback DB appender to store 
-function invocation parameters to a relational MySQL database. Here I tested the logging functionality with a local MySQL database, 
-as well as a database hosted in AWS and Google.
+The package `logging.dynamodb` contains a database logger which stores the function invocations to a
+DynamoDB table hosted on AWS.
 
 The package `logging.influxdb` contains a database logger which stores similar function parameters 
 to the time series database InfluxDB. 
 
-The package `logging.dynamodb` contains a database logger which stores the function invocations to a
-DynamoDB table hosted on AWS.
+The package `logging.jdbc` contains a database logger which stores function invocation 
+parameters to JDBC-compliant databases. This database logger is more flexible compared to the 
+Logback DB appender and can be adapted easily, e.g. if there is the need to add additional 
+attributes.
+
+The package `logging.logback` contains a simple logger which logs function invocation parameters 
+with Logback. Depending on the logback configuration a DB appender may be used to store the
+function invocation parameters to a relational MySQL database. Here I tested the logging 
+functionality with a local MySQL database, as well as a database hosted in AWS and Google.
 
 The `CompositeEnactmentLogger` in the package `logging.composite` may be used to use multiple 
 loggers at the same time in order to store information about function invocations on different 
@@ -35,11 +41,12 @@ need to be located in the respective folders within the `config/database` folder
 For the setup of the individual database instances you can find instructions in the respective 
 database folders:
 
-- [MySQL hosted on AWS](config/database/mysql/setup_instructions_aws_mysql.txt)
-- [MySQL hosted on Google](config/database/mysql/setup_instructions_google_mysql.txt)
-- [MySQL hosted on localhost](config/database/mysql/setup_instructions_local_mysql.txt)
+- [Logback MySQL hosted on AWS](config/database/mysql/setup_instructions_aws_mysql.txt)
+- [Logback MySQL hosted on Google](config/database/mysql/setup_instructions_google_mysql.txt)
+- [Logback MySQL hosted on localhost](config/database/mysql/setup_instructions_local_mysql.txt)
 - [InfluxDB hosted on InfluxDB Cloud](config/database/influxdb/setup_instructions_influxdb.txt)
 - [DynamoDB hosted on AWS](config/database/dynamodb/setup_instructions_dynamodb.txt)
+- [JDBC MySQL database creation](config/database/jdbc/setup_instructions_jdbc_mysql.txt)
 
 #### Specifying database credentials
 
@@ -49,16 +56,15 @@ individual properties files yourself. **Please make sure that the database crede
 committed.** The respective files should already be excluded in the `.gitignore` file by the entry 
 `/config/database/*/*.properties`.
 
-##### MySQL
 
-`config/database/mysql/mysql.properties`
-
+##### DynamoDB
+`config/database/dynamodb/dynamodb.properties
+`
 ```properties
-user=username
-password=password
-db_instance=database_url | ip_address | localhost
-db_port=database_port (default 3306)
-db_name=database_name
+aws_access_key_id=aws_access_key_id
+aws_secret_access_key=aws_secret_access_key
+table=table_name
+region=region
 ```
 
 ##### InfluxDB
@@ -71,14 +77,28 @@ org=org_name
 url=url
 ```
 
-##### DynamoDB
-`config/database/dynamodb/dynamodb.properties
-`
+##### JDBC
+
+`config/database/jdbc/jdbc.properties`
+
 ```properties
-aws_access_key_id=aws_access_key_id
-aws_secret_access_key=aws_secret_access_key
-table=table_name
-region=region
+user=username
+password=password
+db_instance=database_url | ip_address | localhost
+db_port=database_port (default 3306)
+db_name=database_name
+```
+
+##### MySQL Logback
+
+`config/database/mysql/mysql.properties`
+
+```properties
+user=username
+password=password
+db_instance=database_url | ip_address | localhost
+db_port=database_port (default 3306)
+db_name=database_name
 ```
 
 ### Project Setup
@@ -103,7 +123,7 @@ region=region
    
 2. In the Opt4J configurator you can define if the function enactments should be logged 
    (`logFunctionProperties`) and which logger you would like to use (`useLogback`, `useInfluxDB`,
-   `useDynamoDB`). There is also the option to select multiple loggers at the same time.
+   `useDynamoDB`, `useJdbc`). There is also the option to select multiple loggers at the same time.
    Please make sure that the path to your logger configurations/properties is 
    set correctly.
    
