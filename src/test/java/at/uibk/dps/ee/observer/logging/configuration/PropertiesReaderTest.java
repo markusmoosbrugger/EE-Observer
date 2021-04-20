@@ -1,22 +1,24 @@
 package at.uibk.dps.ee.observer.logging.configuration;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import org.junit.Test;
-import org.slf4j.Logger;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.List;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PropertiesReaderTest {
 
@@ -71,46 +73,45 @@ public class PropertiesReaderTest {
     assertEquals("testdbname", properties.get("db_name"));
   }
 
-  static void setFinalStatic(Field field, Object newValue)
-      throws NoSuchFieldException, IllegalAccessException {
-    field.setAccessible(true);
-    Field modifiersField = Field.class.getDeclaredField("modifiers");
-    modifiersField.setAccessible(true);
-    modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-    field.set(null, newValue);
-  }
-
   @Test
-  public void testReadPropertiesFileNotFound() throws NoSuchFieldException, IllegalAccessException {
-
+  public void testReadPropertiesFileNotFound() {
     String filepath = "./filepath_does_not_exist/test.properties";
-    Logger loggerMock = mock(Logger.class);
+    Logger logger = (Logger) PropertiesReader.logger;
 
-    // get rid of the final modifier from the logger field to mock it afterwards
-    setFinalStatic(PropertiesReader.class.getDeclaredField("logger"), loggerMock);
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
+    listAppender.start();
+    logger.addAppender(listAppender);
+
+    String expectedLogEntry = "Properties file not found at given location " + filepath + ".";
 
     Properties properties = PropertiesReader.readProperties(filepath);
 
-    verify(loggerMock).error(eq("Properties file not found at given location {}."), eq(filepath),
-        any(FileNotFoundException.class));
+    List<ILoggingEvent> logList = listAppender.list;
+    assertEquals(1, logList.size());
+    assertEquals(Level.ERROR, logList.get(0).getLevel());
+    assertEquals(expectedLogEntry, logList.get(0).getFormattedMessage());
     assertTrue(properties.isEmpty());
   }
 
+
   @Test
-  public void testReadPropertiesIOException()
-      throws IOException, NoSuchFieldException, IllegalAccessException {
+  public void testReadPropertiesIOException() throws IOException {
+    Logger logger = (Logger) PropertiesReader.logger;
+
+    ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
+    listAppender.start();
+    logger.addAppender(listAppender);
+
     FileInputStream inputStreamMock = mock(FileInputStream.class);
     when(inputStreamMock.read(any())).thenThrow(IOException.class);
 
-    Logger loggerMock = mock(Logger.class);
-
-    // get rid of the final modifier from the logger field to mock it afterwards
-    setFinalStatic(PropertiesReader.class.getDeclaredField("logger"), loggerMock);
-
+    String expectedLogEntry = "IO Exception while reading properties file with input stream.";
     Properties properties = PropertiesReader.readProperties(inputStreamMock);
 
-    verify(loggerMock).error(eq("IO Exception while reading properties file with input stream."),
-        any(IOException.class));
+    List<ILoggingEvent> logList = listAppender.list;
+    assertEquals(1, logList.size());
+    assertEquals(Level.ERROR, logList.get(0).getLevel());
+    assertEquals(expectedLogEntry, logList.get(0).getFormattedMessage());
     assertTrue(properties.isEmpty());
   }
 
