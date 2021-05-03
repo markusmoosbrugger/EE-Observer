@@ -1,8 +1,11 @@
 1. Create a MySQL database instance (e.g. on localhost, Google or AWS) --> see instructions in mysql
  folder
 
-2. Connect to the database and execute the script "sql_db_definition.ddl" --> The database should be
- created now and an example entry is inserted.
+2. Connect to the database server and execute the script "sql_db_definition.ddl" --> The database
+should be created now and an example entry is inserted. By default, a database with the name
+"ee_observer" is created. If you like to create another database or use an already existing
+ one, please update the name in the .ddl script.
 
 3. Create and configure `jdbc.properties` file located in this directory with the required
-properties.
+properties. Please make sure that the database name in the .ddl script matches the property db_name
+in the .properties file.
