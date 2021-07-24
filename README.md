@@ -1,4 +1,5 @@
 [![EE DB CI Java Repository](https://github.com/markusmoosbrugger/EE-DB-Writer/actions/workflows/gradle.yml/badge.svg)](https://github.com/markusmoosbrugger/EE-DB-Writer/actions/workflows/gradle.yml)
+[![](https://jitpack.io/v/markusmoosbrugger/EE-Observer.svg)](https://jitpack.io/#markusmoosbrugger/EE-Observer)
 
 # EE-Observer
 
