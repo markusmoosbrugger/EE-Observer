@@ -46,7 +46,7 @@ public class PropertiesReader {
    */
   public static Properties readProperties(FileInputStream inputStream) {
     Properties properties = new Properties();
-    try (inputStream) {
+    try {
       properties.load(inputStream);
     } catch (IOException e) {
       logger.error("IO Exception while reading properties file with input stream.", e);
