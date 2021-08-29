@@ -23,6 +23,7 @@ import java.util.Properties;
  *
  * @author Markus Moosbrugger
  */
+
 public class JdbcEnactmentLogger implements EnactmentLogger {
 
   protected JdbcConfiguration configuration;
@@ -64,7 +65,14 @@ public class JdbcEnactmentLogger implements EnactmentLogger {
       conn = DriverManager.getConnection(url, configuration.getUser(), configuration.getPassword());
     } catch (SQLException e) {
       logger.error("SQL exception while initializing the database connection.", e);
+    } finally {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        logger.error("SQL exception while closing the database connection.", e);
+      }
     }
+
     return conn;
   }
 
