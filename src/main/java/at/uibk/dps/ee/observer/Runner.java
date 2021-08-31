@@ -2,6 +2,7 @@ package at.uibk.dps.ee.observer;
 
 import at.uibk.dps.ee.observer.logging.dynamodb.DynamoDBEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.influxdb.InfluxDBEnactmentLogger;
+import at.uibk.dps.ee.observer.logging.jdbc.JdbcEnactmentLogger;
 import at.uibk.dps.ee.observer.logging.logback.LogbackEnactmentLogger;
 import at.uibk.dps.ee.observer.simulator.FunctionInvocationSimulator;
 import ch.qos.logback.classic.util.ContextInitializer;
@@ -15,6 +16,8 @@ public class Runner {
     System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "./logging/config/logback.xml");
 
     LogbackEnactmentLogger logbackLogger = new LogbackEnactmentLogger();
+    JdbcEnactmentLogger jdbcLogger =
+        new JdbcEnactmentLogger("./config/database/jdbc/jdbc.properties");
     InfluxDBEnactmentLogger influxLogger =
         new InfluxDBEnactmentLogger("./config/database/influxdb/influxdb.properties");
     DynamoDBEnactmentLogger dynamoLogger =
@@ -22,6 +25,7 @@ public class Runner {
 
 
     FunctionInvocationSimulator simulator = new FunctionInvocationSimulator();
+    simulator.addLogger(jdbcLogger);
     simulator.addLogger(logbackLogger);
     simulator.addLogger(influxLogger);
     simulator.addLogger(dynamoLogger);

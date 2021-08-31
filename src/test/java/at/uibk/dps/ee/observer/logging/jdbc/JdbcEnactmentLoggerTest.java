@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -36,7 +37,8 @@ public class JdbcEnactmentLoggerTest {
 
     Connection connectionMock = mock(Connection.class);
 
-    JdbcEnactmentLogger jdbcEnactmentLogger = new JdbcEnactmentLogger(connectionMock);
+    JdbcEnactmentLogger jdbcEnactmentLogger = spy(JdbcEnactmentLogger.class);
+    doReturn(connectionMock).when(jdbcEnactmentLogger).getConnection();
 
     PreparedStatement statementMock = mock(PreparedStatement.class);
     when(connectionMock.prepareStatement(anyString())).thenReturn(statementMock);
@@ -62,7 +64,8 @@ public class JdbcEnactmentLoggerTest {
 
     Connection connectionMock = mock(Connection.class);
 
-    JdbcEnactmentLogger jdbcEnactmentLogger = new JdbcEnactmentLogger(connectionMock);
+    JdbcEnactmentLogger jdbcEnactmentLogger = spy(JdbcEnactmentLogger.class);
+    doReturn(connectionMock).when(jdbcEnactmentLogger).getConnection();
     Logger logger = (Logger) jdbcEnactmentLogger.logger;
 
     ListAppender<ILoggingEvent> listAppender = new ListAppender<>();

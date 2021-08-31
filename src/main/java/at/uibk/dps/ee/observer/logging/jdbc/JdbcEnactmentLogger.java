@@ -27,7 +27,6 @@ import java.util.Properties;
 public class JdbcEnactmentLogger implements EnactmentLogger {
 
   protected JdbcConfiguration configuration;
-  protected Connection connection;
   protected final Logger logger = LoggerFactory.getLogger(JdbcEnactmentLogger.class);
 
   /**
@@ -40,40 +39,18 @@ public class JdbcEnactmentLogger implements EnactmentLogger {
       final String pathToPropertiesFile) {
     Properties properties = PropertiesReader.readProperties(pathToPropertiesFile);
     this.configuration = new JdbcConfiguration(properties);
-    this.connection = initConnection();
   }
 
   /**
-   * Additional constructor which can be used to provide a SQL connection.
-   *
-   * @param connection the SQL connection
+   * Additional zero-argument constructor used for unit tests.
    */
-  public JdbcEnactmentLogger(Connection connection) {
-    this.connection = connection;
+  public JdbcEnactmentLogger() {
   }
 
-  /**
-   * Initializes the connection to the MySQL database.
-   *
-   * @return the connection
-   */
-  private Connection initConnection() {
+  protected Connection getConnection() throws SQLException {
     String url = "jdbc:mysql://" + configuration.getInstance() + ":" + configuration.getPort() + "/"
         + configuration.getDatabaseName();
-    Connection conn = null;
-    try {
-      conn = DriverManager.getConnection(url, configuration.getUser(), configuration.getPassword());
-    } catch (SQLException e) {
-      logger.error("SQL exception while initializing the database connection.", e);
-    } finally {
-      try {
-        conn.close();
-      } catch (SQLException e) {
-        logger.error("SQL exception while closing the database connection.", e);
-      }
-    }
-
-    return conn;
+    return DriverManager.getConnection(url, configuration.getUser(), configuration.getPassword());
   }
 
   @Override
@@ -82,7 +59,8 @@ public class JdbcEnactmentLogger implements EnactmentLogger {
         + "(timestamp, typeId, enactmentMode, implementationId, executionTime, inputComplexity, "
         + "success) values (?,?,?,?,?,?,?)";
 
-    try (PreparedStatement preparedStatement = connection.prepareStatement(statementString)) {
+    try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(statementString)) {
       preparedStatement.setLong(1, entry.getTimestamp().toEpochMilli());
       preparedStatement.setString(2, entry.getTypeId());
       preparedStatement.setString(3, entry.getEnactmentMode());
