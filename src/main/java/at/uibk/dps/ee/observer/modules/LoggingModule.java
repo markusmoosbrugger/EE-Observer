@@ -25,7 +25,6 @@ import java.util.List;
  *
  * @author Markus Moosbrugger
  */
-// TODO change to EeModule or use FunctionModule
 public class LoggingModule extends FunctionModule {
 
   @Order(1)
